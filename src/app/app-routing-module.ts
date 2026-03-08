@@ -9,6 +9,7 @@ import {AProposComponent} from './pages/a-propos.component/a-propos.component';
 import {RetoursComponent} from './pages/retours.component/retours.component';
 import {CheckoutComponent} from './checkout.component/checkout.component';
 import {SuccessComponent} from './success.component/success.component';
+import {AdminDashboardComponent} from './admin-dashboard.component/admin-dashboard.component';
 
 
 
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'retours', component: RetoursComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'success', component: SuccessComponent },
+  { path: 'admin', component: AdminDashboardComponent },
   { path: '**', redirectTo: '' },
 ];
 

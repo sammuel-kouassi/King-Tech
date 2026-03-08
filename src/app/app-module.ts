@@ -22,6 +22,7 @@ import { Partenaire } from './partenaire/partenaire';
 import { BoutiqueComponent } from './boutique.component/boutique.component';
 import { ProductDetailComponent } from './product-detail.component/product-detail.component';
 import {provideHttpClient} from '@angular/common/http';
+import { AdminDashboardComponent } from './admin-dashboard.component/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {provideHttpClient} from '@angular/common/http';
     FormationComponent,
     AProposComponent,
     RetoursComponent,
-    Partenaire
+    Partenaire,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

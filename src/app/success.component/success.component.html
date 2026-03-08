@@ -8,7 +8,7 @@
     </div>
     <h1>Merci pour votre commande !</h1>
     <p>Un email de confirmation a été envoyé à l'adresse indiquée.</p>
-    <div class="order-number">Commande #KT-2026-001</div>
+    <div class="order-number">Commande #{{ orderNumber }}</div>
   </section>
 
   <section class="invoice-container">
@@ -20,14 +20,14 @@
         </div>
         <div class="invoice-title">
           <h1>FACTURE</h1>
-          <p>Date : 08 Mars 2026</p>
+          <p>Date : {{ currentDate | date:'dd/MM/yyyy' }}</p>
         </div>
       </div>
 
       <div class="invoice-billing">
         <div class="bill-to">
           <p class="label">Facturé à :</p>
-          <strong>{{ userName || 'Cher Client' }}</strong>
+          <strong>{{ userName }}</strong>
           <p>Livraison Standard</p>
         </div>
       </div>
@@ -42,20 +42,22 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>Arduino UNO R4 WiFi</td>
-          <td>1</td>
-          <td>27.90 €</td>
-          <td>27.90 €</td>
-        </tr>
+          @for (item of orderItems; track $index) {
+            <tr>
+              <td>{{ item.name || item.produit?.nom }}</td>
+              <td>{{ item.quantity || item.quantite }}</td>
+              <td>{{ (item.price || item.produit?.prix) | number:'1.2-2' }} FCFA</td>
+              <td>{{ ((item.price || item.produit?.prix) * (item.quantity || item.quantite)) | number:'1.2-2' }} FCFA</td>
+            </tr>
+          }
         </tbody>
       </table>
 
       <div class="invoice-footer">
         <div class="total-box">
-          <div class="total-row"><span>Sous-total</span> <span>27.90 €</span></div>
-          <div class="total-row"><span>Livraison</span> <span>0.00 €</span></div>
-          <div class="total-row grand-total"><span>Total</span> <span>27.90 €</span></div>
+          <div class="total-row"><span>Sous-total</span> <span>{{ orderTotal | number:'1.2-2' }} FCFA</span></div>
+          <div class="total-row"><span>Livraison</span> <span>0.00 FCFA</span></div>
+          <div class="total-row grand-total"><span>Total</span> <span>{{ orderTotal | number:'1.2-2' }} FCFA</span></div>
         </div>
       </div>
     </div>

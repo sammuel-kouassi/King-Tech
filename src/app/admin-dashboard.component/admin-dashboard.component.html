@@ -1,0 +1,65 @@
+<div class="admin-dashboard">
+  <div class="dashboard-header">
+    <h1>Tableau de Bord - KING-TECH</h1>
+    <p>Vue d'ensemble de l'activité e-commerce</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-info">
+        <h3>Total Commandes</h3>
+        <p class="stat-value">{{ nombreCommandes }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <h3>Chiffre d'Affaires</h3>
+        <p class="stat-value">{{ chiffreAffairesTotal | number:'1.2-2' }} FCFA</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="orders-section">
+    <h2>Dernières Commandes</h2>
+
+    <div class="table-container">
+      <table class="admin-table">
+        <thead>
+        <tr>
+          <th>N° Commande</th>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Total</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (cmd of commandes; track cmd.id) {
+            <tr>
+              <td><strong>{{ cmd.numeroCommande }}</strong></td>
+              <td>{{ cmd.dateCommande | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ cmd.nomClient }}</td>
+              <td>{{ cmd.total | number:'1.2-2' }} FCFA</td>
+              <td>
+                <span class="badge-status" [ngClass]="cmd.statut.toLowerCase()">
+                  {{ cmd.statut }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-action">Détails</button>
+              </td>
+            </tr>
+          }
+          @if (commandes.length === 0) {
+            <tr>
+              <td colspan="6" class="empty-state">Aucune commande pour le moment.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,24 +1,46 @@
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-success',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './success.component.html',
   styleUrls: ['./success.component.css']
 })
 export class SuccessComponent implements OnInit {
-  userName: string = '';
+  private cartService = inject(CartService);
 
-  constructor(private route: ActivatedRoute) {}
+  orderItems: any[] = [];
+  orderTotal: number = 0;
+
+  // Variables par défaut
+  userName: string = 'Cher Client';
+  orderNumber: string = 'En cours...';
+  currentDate: any = new Date();
 
   ngOnInit() {
-    // On récupère le nom passé dans l'URL
-    this.route.queryParams.subscribe(params => {
-      this.userName = params['user'] || 'Cher Client';
-    });
+    // 1. On intercepte les vraies données envoyées par Spring Boot via le routeur
+    const commandeInfo = history.state.commandeInfo;
+
+    if (commandeInfo) {
+      // On remplace nos fausses données par celles de la base de données !
+      this.orderNumber = commandeInfo.numeroCommande;
+      this.userName = commandeInfo.nomClient;
+      this.currentDate = commandeInfo.dateCommande;
+    } else {
+      // Si on rafraîchit la page, on met une valeur par défaut de sécurité
+      this.orderNumber = 'KT-XXXX';
+    }
+
+    // 2. On "photographie" le panier actuel
+    this.orderItems = [...this.cartService.items()];
+    this.orderTotal = this.cartService.cartTotal();
+
+    // 3. On vide le panier de la barre de navigation
+    this.cartService.clearCart();
   }
 
   printInvoice() {

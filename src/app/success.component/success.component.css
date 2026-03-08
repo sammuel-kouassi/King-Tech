@@ -139,9 +139,30 @@
 .btn-home { background: white; color: #64748b; border: 1px solid #e2e8f0; }
 .btn-home:hover { background: #f8fafc; color: #1e293b; }
 
-/* Style pour l'impression Browser */
+
+/* =========================================
+   STYLE POUR L'IMPRESSION (PDF & Papier)
+========================================= */
 @media print {
-  .success-hero, .invoice-actions, app-navbar, app-footer { display: none !important; }
-  .invoice-paper { box-shadow: none; border: none; padding: 0; }
-  body { background: white; }
+  /* ::ng-deep force Angular à affecter toute la page (menu, footer inclus) */
+  ::ng-deep body * {
+    visibility: hidden !important;
+  }
+
+  /* On rend visible UNIQUEMENT la zone de la facture */
+  ::ng-deep #invoice, ::ng-deep #invoice * {
+    visibility: visible !important;
+  }
+
+  /* On replace la facture tout en haut à gauche de la feuille A4 */
+  ::ng-deep #invoice {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
 }
