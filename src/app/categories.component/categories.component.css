@@ -1,20 +1,21 @@
+/* =========================================
+   EN-TÊTE DE LA SECTION
+========================================= */
 .categories-section {
   padding: 4rem 5%;
-  background-color: #ffffff;
+  background-color: #f8fafc;
 }
 
-/* --- En-tête --- */
 .section-header {
   text-align: center;
   margin-bottom: 3rem;
 }
 
 .section-header h2 {
-  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-family: 'Playfair Display', serif;
   font-size: 2.5rem;
   color: #1e293b;
-  margin-bottom: 0.8rem;
-  font-weight: 700;
+  margin-bottom: 1rem;
 }
 
 .section-header p {
@@ -22,83 +23,93 @@
   font-size: 1.1rem;
   max-width: 600px;
   margin: 0 auto;
-  line-height: 1.5;
 }
 
-/* --- Grille --- */
+/* =========================================
+   GRILLE DES CATÉGORIES
+========================================= */
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-  gap: 1.5rem;
+  /* Crée des colonnes automatiques et responsives */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* --- Carte Catégorie --- */
+/* =========================================
+   CARTE CATÉGORIE (IMAGE + OVERLAY)
+========================================= */
 .category-card {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden; /* Empêche l'image de déborder quand elle zoome */
-  display: block; /* Nécessaire car c'est une balise <a> */
-  height: 250px;
+  position: relative; /* Indispensable pour que l'overlay se place par-dessus */
+  display: block;
+  border-radius: 16px;
+  overflow: hidden; /* Empêche l'image de déborder des coins arrondis */
   text-decoration: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 250px; /* Hauteur fixe pour que toutes les cartes soient alignées */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
 }
 
 .category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 155, 133, 0.2); /* Ombre aux couleurs de King-Tech */
 }
 
-.category-image {
+/* --- L'IMAGE DE FOND --- */
+.img-wrapper {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Remplit tout l'espace sans déformer l'image */
-  transition: transform 0.5s ease; /* Animation fluide du zoom */
 }
 
-.category-card:hover .category-image {
-  transform: scale(1.08); /* Zoom de 8% au survol */
+.category-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recadre l'image proprement sans la déformer */
+  transition: transform 0.6s ease;
 }
 
-/* --- Le dégradé sombre --- */
-.overlay {
+.category-card:hover .category-bg {
+  transform: scale(1.08); /* Effet de zoom fluide au survol */
+}
+
+/* =========================================
+   L'OVERLAY (LE DÉGRADÉ ET LE TEXTE)
+========================================= */
+.category-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
-  height: 60%; /* Le dégradé ne couvre que le bas de l'image */
-  /* Dégradé allant du noir transparent en bas vers le transparent en haut */
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
-  z-index: 1;
+  right: 0;
+  height: 60%; /* Le dégradé monte jusqu'à un peu plus de la moitié */
+  /* Dégradé noir/bleu nuit transparent -> opaque en bas */
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0) 100%);
+  padding: 2rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none; /* L'overlay ne bloque pas le clic sur l'image */
 }
 
-/* --- Le Texte --- */
-.category-content {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 1.5rem;
-  z-index: 2; /* S'assure que le texte est au dessus du dégradé */
-  color: white;
-}
-
-.category-content h3 {
-  margin: 0 0 0.3rem 0;
-  font-size: 1.4rem;
+.category-title {
+  color: #ffffff;
+  font-size: 1.6rem;
   font-weight: 700;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Léger contour pour encore plus de lisibilité */
+  margin: 0 0 0.3rem 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Rend le texte lisible même sur image claire */
+  transition: color 0.3s ease;
 }
 
-.product-count {
-  font-size: 0.9rem;
-  opacity: 0.9;
+.category-card:hover .category-title {
+  color: #14b8a6; /* La couleur passe au vert/cyan au survol */
+}
+
+.category-count {
+  color: #cbd5e1;
+  font-size: 0.95rem;
   font-weight: 500;
-}
-
-/* --- Responsive --- */
-@media (max-width: 900px) {
-  .categories-grid { grid-template-columns: repeat(2, 1fr); } /* 2 colonnes sur tablette */
-}
-
-@media (max-width: 600px) {
-  .categories-grid { grid-template-columns: 1fr; } /* 1 colonne sur mobile */
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

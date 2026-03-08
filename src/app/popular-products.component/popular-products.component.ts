@@ -1,61 +1,48 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CartService } from '../cart.service';
+import { ProduitService } from '../services/produit.service';
+import { ProduitResume } from '../models/produit.model';
 
 @Component({
   selector: 'app-popular-products',
-  standalone: false,
+  standalone: false, // Attention, si tu as des imports comme CommonModule, tu devrais peut-être le passer à "true", ou t'assurer qu'il est déclaré dans un NgModule.
   templateUrl: './popular-products.component.html',
   styleUrls: ['./popular-products.component.css']
 })
-export class PopularProductsComponent {
-  public cartService = inject(CartService);
+export class PopularProductsComponent implements OnInit {
 
-  products = [
-    {
-      id: 1,
-      name: 'Arduino UNO R4 WiFi',
-      category: 'ARDUINO',
-      price: 27.90,
-      oldPrice: null,
-      rating: 4.8,
-      badgeText: 'Nouveau',
-      badgeType: 'new',
-      image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 2,
-      name: 'Raspberry Pi 5 - 8GB',
-      category: 'RASPBERRY',
-      price: 89.90,
-      oldPrice: 99.90,
-      rating: 4.9,
-      badgeText: 'Promo',
-      badgeType: 'promo',
-      image: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 3,
-      name: 'Kit Composants Électroniques',
-      category: 'COMPONENTS',
-      price: 34.90,
-      oldPrice: null,
-      rating: 4.6,
-      badgeText: null,
-      badgeType: null,
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 4,
-      name: 'Kit Robot Éducatif 4WD',
-      category: 'ROBOTICS',
-      price: 59.90,
-      oldPrice: null,
-      rating: 4.7,
-      badgeText: 'Nouveau',
-      badgeType: 'new',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=400&h=300'
-    }
-  ];
+  public cartService = inject(CartService);
+  private produitService = inject(ProduitService);
+  private cdr = inject(ChangeDetectorRef); // Indispensable pour l'affichage immédiat
+
+  // On vide le tableau en dur
+  products: any[] = [];
+
+  ngOnInit() {
+    this.produitService.getProduits().subscribe({
+      next: (data: ProduitResume[]) => {
+        // 1. Filtrer : On ne garde QUE les produits où isPopular est true
+        const popularData = data.filter(p => p.isPopular === true);
+
+        // 2. Mapper : On adapte le JSON du backend pour ton HTML
+        this.products = popularData.map(p => ({
+          id: p.id,
+          name: p.nom,
+          category: p.categorie,
+          price: p.prix,
+          oldPrice: null, // À faire évoluer si tu as un prix barré en base
+          rating: p.note,
+          badgeText: p.badge,
+          badgeType: p.badge ? (p.badge.toLowerCase() === 'promo' ? 'promo' : 'new') : null,
+          image: p.imagePrincipale || 'assets/images/placeholder.jpg'
+        })).slice(0, 4); // On garde un maximum de 4 produits pour que ta grille d'accueil reste parfaite
+
+        // 3. Rafraîchir : On réveille Angular
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des produits vedettes:', err);
+      }
+    });
+  }
 }

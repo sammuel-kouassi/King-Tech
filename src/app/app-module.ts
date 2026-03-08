@@ -19,6 +19,9 @@ import { RetoursComponent } from './pages/retours.component/retours.component';
 import { CheckoutComponent } from './checkout.component/checkout.component';
 import { SuccessComponent } from './success.component/success.component';
 import { Partenaire } from './partenaire/partenaire';
+import { BoutiqueComponent } from './boutique.component/boutique.component';
+import { ProductDetailComponent } from './product-detail.component/product-detail.component';
+import {provideHttpClient} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,6 @@ import { Partenaire } from './partenaire/partenaire';
     HeroComponent,
     FeaturesBarComponent,
     PopularProductsComponent,
-    CategoriesComponent,
     FooterComponent,
     HomeComponent,
     FormationComponent,
@@ -40,6 +42,9 @@ import { Partenaire } from './partenaire/partenaire';
     CommonModule,
     AppRoutingModule,
     NewsletterComponent,
+    CategoriesComponent,
+    BoutiqueComponent,
+    ProductDetailComponent,
     CartComponent,
     CheckoutComponent,
     SuccessComponent,
@@ -47,6 +52,7 @@ import { Partenaire } from './partenaire/partenaire';
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideHttpClient()
   ],
   bootstrap: [App]
 })

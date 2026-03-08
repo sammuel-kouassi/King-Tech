@@ -57,9 +57,9 @@
 
           <div class="product-footer">
             <div class="pricing">
-              <span class="price">{{ product.price }} €</span>
+              <span class="price">{{ product.price }} FCFA</span>
               @if (product.oldPrice) {
-                <span class="old-price">{{ product.oldPrice }} €</span>
+                <span class="old-price">{{ product.oldPrice }} FCFA</span>
               }
             </div>
             <button class="add-to-cart-btn" aria-label="Ajouter au panier" (click)="$event.preventDefault(); $event.stopPropagation(); cartService.addToCart(product, 1)">

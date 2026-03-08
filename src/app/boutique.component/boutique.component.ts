@@ -1,47 +1,69 @@
-import { Component, inject } from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {ActivatedRoute, RouterModule} from '@angular/router';
-import {CartService} from '../cart.service';
+// 1. Ajoute ChangeDetectorRef dans tes imports
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CartService } from '../cart.service';
+import { ProduitService } from '../services/produit.service';
+import { ProduitResume } from '../models/produit.model';
 
 @Component({
   selector: 'app-boutique',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgOptimizedImage], // <-- 2. Ajoute RouterModule ici
+  imports: [CommonModule, RouterModule, NgOptimizedImage],
   templateUrl: './boutique.component.html',
   styleUrls: ['./boutique.component.css']
 })
-export class BoutiqueComponent {
+export class BoutiqueComponent implements OnInit {
+
   route = inject(ActivatedRoute);
   public cartService = inject(CartService);
-  categories = ['Tout', 'Kits Arduino', 'Raspberry Pi', 'Composants', 'Modules', 'Robotique', 'Outils & Impression 3D'];
-  activeCategory = 'Tout';
+  private produitService = inject(ProduitService);
 
-  products = [
-    {
-      id: 1, name: 'Arduino UNO R4 WiFi', category: 'Kits Arduino', price: 27.90, oldPrice: null, rating: 4.8, badgeText: 'Nouveau', badgeType: 'new',
-      image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 5, name: 'Arduino Mega 2560 R3', category: 'Kits Arduino', price: 42.50, oldPrice: null, rating: 4.7, badgeText: null, badgeType: null,
-      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 6, name: 'Kit Démarrage Arduino', category: 'Kits Arduino', price: 65.00, oldPrice: 75.00, rating: 4.9, badgeText: 'Nouveau', badgeType: 'new',
-      image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 2, name: 'Raspberry Pi 5 - 8GB', category: 'Raspberry Pi', price: 89.90, oldPrice: 99.90, rating: 4.9, badgeText: 'Promo', badgeType: 'promo',
-      image: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 3, name: 'Kit Composants Électroniques', category: 'Composants', price: 34.90, oldPrice: null, rating: 4.6, badgeText: null, badgeType: null,
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 4, name: 'Kit Robot Éducatif 4WD', category: 'Robotique', price: 59.90, oldPrice: null, rating: 4.7, badgeText: 'Nouveau', badgeType: 'new',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=400&h=300'
-    }
-  ];
+  // 2. Injecte le ChangeDetectorRef
+  private cdr = inject(ChangeDetectorRef);
+
+  categories: string[] = ['Tout'];
+  activeCategory = 'Tout';
+  private categoryFromUrl: string | null = null;
+
+  products: any[] = [];
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['category']) {
+        this.categoryFromUrl = params['category'];
+      }
+    });
+
+    this.produitService.getProduits().subscribe({
+      next: (data: ProduitResume[]) => {
+        this.products = data.map(p => ({
+          id: p.id,
+          name: p.nom,
+          category: p.categorie,
+          price: p.prix,
+          oldPrice: null,
+          rating: p.note,
+          badgeText: p.badge,
+          badgeType: p.badge ? (p.badge.toLowerCase() === 'promo' ? 'promo' : 'new') : null,
+          image: p.imagePrincipale || 'assets/images/placeholder.jpg'
+        }));
+
+        const categoriesUniques = [...new Set(data.map(p => p.categorie))];
+        this.categories = ['Tout', ...categoriesUniques];
+
+        if (this.categoryFromUrl && this.categories.includes(this.categoryFromUrl)) {
+          this.activeCategory = this.categoryFromUrl;
+        }
+
+        // 3. LA MAGIE EST ICI : On force Angular à actualiser l'écran immédiatement
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erreur PostgreSQL:', err);
+      }
+    });
+  }
 
   setCategory(cat: string) {
     this.activeCategory = cat;
@@ -51,21 +73,6 @@ export class BoutiqueComponent {
     if (this.activeCategory === 'Tout') {
       return this.products;
     }
-    // Sinon, on filtre (on ne garde que les produits dont la catégorie correspond)
     return this.products.filter(product => product.category === this.activeCategory);
-  }
-
-  ngOnInit() {
-    // On "écoute" les paramètres de l'URL quand la page charge
-    this.route.queryParams.subscribe(params => {
-      const categoryFromUrl = params['category']; // On cherche le paramètre 'category'
-
-      // Si le paramètre existe et qu'il est dans notre liste de catégories valides
-      if (categoryFromUrl && this.categories.includes(categoryFromUrl)) {
-        this.activeCategory = categoryFromUrl; // On active ce filtre !
-      } else {
-        this.activeCategory = 'Tout'; // Sinon, on affiche tout
-      }
-    });
   }
 }

@@ -1,6 +1,6 @@
 .partners-section {
   padding: 6rem 0;
-  background-color: #fcfcfc;
+  background-color: #f8fafc; /* Un gris très très clair, presque blanc, très élégant */
   border-top: 1px solid #f1f5f9;
 }
 
@@ -16,53 +16,68 @@
   overflow: hidden;
   position: relative;
   width: 100%;
-  /* Masque linéaire pour le fondu sur les côtés */
+  max-width: 1200px;
+  margin: 0 auto;
+
+  /* Masque linéaire : INDISPENSABLE de mettre la version -webkit- pour Chrome/Safari */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
 .logo-track {
   display: flex;
-  width: calc(250px * 12);
-  animation: scroll-partners 35s linear infinite;
+  width: calc(250px * 12); /* 250px de large * 12 logos au total */
+  animation: scroll-partners 30s linear infinite;
 }
 
+/* Met l'animation en pause quand on survole le bandeau avec la souris */
 .logo-track:hover {
   animation-play-state: paused;
 }
 
 .logo-item {
   width: 250px;
-  height: 100px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 40px;
+  padding: 0 30px;
 }
 
 .logo-item img {
-  max-width: 100%;
-  max-height: 50px;
+  width: 100%;
+  max-width: 140px; /* Force une largeur max pour éviter qu'un logo écrase les autres */
+  max-height: 55px;
   object-fit: contain;
-  filter: grayscale(100%);
-  opacity: 0.4;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* État par défaut : Gris et semi-transparent */
+  filter: grayscale(100%) opacity(40%);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* État au survol : Couleur originale et léger zoom */
 .logo-item:hover img {
-  filter: grayscale(0%);
-  opacity: 1;
-  transform: scale(1.1);
+  filter: grayscale(0%) opacity(100%);
+  transform: scale(1.15);
 }
 
 @keyframes scroll-partners {
   0% { transform: translateX(0); }
+  /* On décale vers la gauche de la taille de 6 logos (la moitié) pour boucler invisiblement */
   100% { transform: translateX(calc(-250px * 6)); }
 }
 
+/* =========================================
+   RESPONSIVE (Mobile & Tablette)
+========================================= */
 @media (max-width: 768px) {
-  .logo-item { width: 180px; }
-  .logo-track { width: calc(180px * 12); }
+  .logo-item { width: 160px; }
+  .logo-track { width: calc(160px * 12); }
+
+  .logo-item img {
+    max-width: 100px;
+  }
+
   @keyframes scroll-partners {
-    100% { transform: translateX(calc(-180px * 6)); }
+    100% { transform: translateX(calc(-160px * 6)); }
   }
 }

@@ -1,21 +1,22 @@
 <section class="categories-section">
-  <div class="section-header">
+  <div class="section-header text-center">
     <h2>Nos Catégories</h2>
     <p>Explorez notre gamme complète de produits électroniques pour makers, étudiants et professionnels.</p>
   </div>
 
   <div class="categories-grid">
-    @for (category of categories; track category.id) {
+    @for (cat of categoriesList; track cat.name) {
+      <a [routerLink]="['/boutique']" [queryParams]="{category: cat.name}" class="category-card">
 
-      <a [routerLink]="['/boutique']" [queryParams]="{ category: category.name }" class="category-card">
+        <div class="img-wrapper">
+          <img [ngSrc]="cat.image" [alt]="cat.name" width="600" height="400" class="category-bg">
+        </div>
 
-        <img [ngSrc]="category.image" [alt]="category.name" class="category-image" width="600" height="400">
-
-        <div class="overlay"></div>
-
-        <div class="category-content">
-          <h3>{{ category.name }}</h3>
-          <span class="product-count">{{ category.count }} produits &rarr;</span>
+        <div class="category-overlay">
+          <h3 class="category-title">{{ cat.name }}</h3>
+          <span class="category-count">
+            {{ cat.count }} produit{{ cat.count !== 1 ? 's' : '' }} &rarr;
+          </span>
         </div>
 
       </a>

@@ -1,58 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ProduitService } from '../services/produit.service';
+import { ProduitResume } from '../models/produit.model';
 
 @Component({
-  selector: 'app-categories',
-  standalone: false,
+  selector: 'app-categories', // Modifie selon le nom de ton composant
+  standalone: true,
+  imports: [CommonModule, RouterModule, NgOptimizedImage],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
 
-  categories = [
+  private produitService = inject(ProduitService);
+  private cdr = inject(ChangeDetectorRef);
+
+  // 1. Définition stricte de tes 6 catégories avec images par défaut et compteurs à 0
+  categoriesList = [
     {
-      id: 1,
-      name: 'Kits Arduino',
-      count: 24,
+      name: 'Arduino',
       image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=600&h=400',
-      link: '/boutique?cat=arduino'
+      count: 0
     },
     {
-      id: 2,
-      name: 'Raspberry Pi',
-      count: 18,
-      image: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&q=80&w=600&h=400',
-      link: '/boutique?cat=raspberry'
+      name: 'Raspberry',
+      image: 'assets/images/raspberry.jpg',
+      count: 0
     },
     {
-      id: 3,
       name: 'Robotique',
-      count: 156,
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&q=80&w=600&h=400',
-      link: '/boutique?cat=robotique'
+      image: 'assets/images/robotique.jpg',
+      count: 0
     },
     {
-      id: 4,
       name: 'Modules',
-      count: 156,
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&q=80&w=600&h=400',
-      link: '/boutique?cat=modules'
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600&h=400',
+      count: 0
     },
     {
-      id: 5,
       name: 'Composants',
-      count: 156,
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&q=80&w=600&h=400',
-      link: '/boutique?cat=composants'
+      image: 'assets/images/composant.jpg',
+      count: 0
     },
     {
-      id: 6,
       name: 'Outils & Impression 3D',
-      count: 156,
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&q=80&w=600&h=400',
-      link: '/boutique?cat=outils & impression 3D'
-    },
+      image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=600&h=400',
+      count: 0
+    }
   ];
 
+  ngOnInit() {
+    this.produitService.getProduits().subscribe({
+      next: (data: ProduitResume[]) => {
+
+        // 2. On s'assure que les compteurs sont à 0 avant de recompter
+        this.categoriesList.forEach(cat => cat.count = 0);
+
+        // 3. Calcul dynamique : on incrémente le compteur si la catégorie correspond
+        data.forEach(produit => {
+          const catIndex = this.categoriesList.findIndex(c => c.name === produit.categorie);
+          if (catIndex !== -1) {
+            this.categoriesList[catIndex].count++;
+          }
+        });
+
+        // 4. On rafraîchit l'affichage
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur chargement des catégories:', err)
+    });
+  }
 }
