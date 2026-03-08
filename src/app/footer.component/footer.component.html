@@ -1,35 +1,25 @@
 <footer class="footer-section">
   <div class="footer-container">
 
-    <div class="footer-col brand-col">
+    <div class="footer-col brand-col" style="animation-delay: 0.1s;">
       <a routerLink="/" class="footer-logo-link">
         <img src="assets/images/logo-king-technbg.png" alt="KING-TECH Logo" class="footer-logo-img">
       </a>
-      <p>Votre partenaire pour tous vos projets électroniques. Kits, composants et modules de qualité.</p>
+      <p>Votre partenaire pour tous vos projets électroniques. <br> Kits, composants et modules de qualité.</p>
     </div>
 
-    <div class="footer-col links-col">
+    <div class="footer-col links-col" style="animation-delay: 0.2s;">
       <h4>Catégories</h4>
       <ul>
-        <li>
-          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Kits Arduino' }">Arduino</a>
-        </li>
-        <li>
-          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Raspberry Pi' }">Raspberry Pi</a>
-        </li>
-        <li>
-          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Composants' }">Composants</a>
-        </li>
-        <li>
-          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Robotique' }">Robotique</a>
-        </li>
-        <li>
-          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Modules' }">Modules</a>
-        </li>
+        <li><a [routerLink]="['/boutique']" [queryParams]="{ category: 'Kits Arduino' }">Arduino</a></li>
+        <li><a [routerLink]="['/boutique']" [queryParams]="{ category: 'Raspberry Pi' }">Raspberry Pi</a></li>
+        <li><a [routerLink]="['/boutique']" [queryParams]="{ category: 'Composants' }">Composants</a></li>
+        <li><a [routerLink]="['/boutique']" [queryParams]="{ category: 'Robotique' }">Robotique</a></li>
+        <li><a [routerLink]="['/boutique']" [queryParams]="{ category: 'Modules' }">Modules</a></li>
       </ul>
     </div>
 
-    <div class="footer-col links-col">
+    <div class="footer-col links-col" style="animation-delay: 0.3s;">
       <h4>Informations</h4>
       <ul>
         <li><a routerLink="/a-propos">À propos</a></li>
@@ -37,7 +27,7 @@
       </ul>
     </div>
 
-    <div class="footer-col contact-col">
+    <div class="footer-col contact-col" style="animation-delay: 0.4s;">
       <h4>Contact</h4>
       <ul class="contact-info">
         <li>contact&#64;king-tech.com</li>
@@ -49,6 +39,8 @@
   </div>
 
   <div class="footer-bottom">
-    <p>&copy; {{ currentYear }} KING-TECH. Tous droits réservés.</p>
+    <div class="footer-bottom-content">
+      <p>&copy; {{ currentYear }} KING-TECH. Tous droits réservés.</p>
+    </div>
   </div>
 </footer>
