@@ -1,0 +1,124 @@
+.retours-page {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* Hero Section */
+.retours-hero {
+  background-color: #009B85;
+  color: white;
+  padding: 5rem 5%;
+  text-align: center;
+}
+
+.retours-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.retours-hero p {
+  font-size: 1.15rem;
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+/* Grille d'information */
+.retours-content {
+  max-width: 1100px;
+  margin: -3rem auto 0;
+  padding: 0 5% 5rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+.info-card {
+  background: white;
+  padding: 2.5rem 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  opacity: 0;
+  animation: fadeUpIn 0.6s ease forwards;
+}
+
+.info-card:nth-child(1) { animation-delay: 0.3s; }
+.info-card:nth-child(2) { animation-delay: 0.4s; }
+.info-card:nth-child(3) { animation-delay: 0.5s; }
+
+.icon-circle {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.info-card p {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Liste des étapes */
+.steps-section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.steps-section h2 {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  color: #1e293b;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.step:hover {
+  transform: translateX(10px);
+}
+
+.step-num {
+  width: 35px;
+  height: 35px;
+  background-color: #009B85;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .info-grid { grid-template-columns: 1fr; }
+}

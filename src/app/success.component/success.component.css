@@ -1,0 +1,147 @@
+.success-page {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 4rem 5%;
+}
+
+/* --- Animation du Checkmark --- */
+.success-hero {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.checkmark {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #009B85;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #009B85;
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+  margin: 0 auto 1.5rem;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #009B85;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke { 100% { stroke-dashoffset: 0; } }
+@keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+@keyframes fill { 100% { box-shadow: inset 0px 0px 0px 80px #f0fdfa; } }
+
+/* --- Style de la Facture --- */
+.invoice-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.invoice-paper {
+  background: white;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #009B85;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+
+.invoice-header h2 { color: #009B85; font-weight: 800; margin: 0; }
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+}
+
+.invoice-table th {
+  text-align: left;
+  background: #f8fafc;
+  padding: 1rem;
+  color: #64748b;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.invoice-table td {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+}
+
+.invoice-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.total-box {
+  width: 250px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  color: #64748b;
+}
+
+.grand-total {
+  border-top: 2px solid #009B85;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+/* --- Actions --- */
+.invoice-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.btn-print, .btn-home {
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+}
+
+.btn-print { background: #1e293b; color: white; border: none; }
+.btn-print:hover { background: #0f172a; transform: translateY(-3px); }
+
+.btn-home { background: white; color: #64748b; border: 1px solid #e2e8f0; }
+.btn-home:hover { background: #f8fafc; color: #1e293b; }
+
+/* Style pour l'impression Browser */
+@media print {
+  .success-hero, .invoice-actions, app-navbar, app-footer { display: none !important; }
+  .invoice-paper { box-shadow: none; border: none; padding: 0; }
+  body { background: white; }
+}

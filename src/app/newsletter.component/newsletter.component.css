@@ -1,0 +1,165 @@
+/* =========================================
+   ANIMATIONS D'ENTRÉE
+========================================= */
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   SECTION NEWSLETTER (FOND & HALOS)
+========================================= */
+.newsletter-section {
+  /* Dégradé subtil pour un fond beaucoup plus riche qu'une couleur unie */
+  background: linear-gradient(135deg, #009B85 0%, #007a69 100%);
+  padding: 6rem 5%; /* Un peu plus d'espace pour un effet aéré */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden; /* Pour couper les halos lumineux s'ils débordent */
+}
+
+/* Effets décoratifs en arrière-plan (Halos de lumière très doux) */
+.newsletter-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.newsletter-section::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,0,0,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.newsletter-container {
+  max-width: 700px;
+  width: 100%;
+  position: relative;
+  z-index: 2; /* Garde le texte au-dessus des halos lumineux */
+}
+
+/* =========================================
+   TYPOGRAPHIE
+========================================= */
+.newsletter-section h2 {
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-size: 3rem; /* Légèrement plus imposant */
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  /* Animation */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.newsletter-section p {
+  font-size: 1.15rem;
+  margin-bottom: 3rem;
+  opacity: 0.9;
+  line-height: 1.6;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* Animation avec délai */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+/* =========================================
+   FORMULAIRE ET BOUTON
+========================================= */
+.newsletter-form {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+
+  /* Animation avec délai */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.4s;
+}
+
+.newsletter-form input {
+  flex: 1;
+  max-width: 450px;
+  padding: 1.2rem 1.5rem; /* Plus grand pour le confort */
+  border: 2px solid transparent;
+  border-radius: 8px; /* Coins plus modernes */
+  font-size: 1.05rem;
+  outline: none;
+  font-family: inherit;
+  color: #1e293b;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.newsletter-form input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Le champ "flotte" quand l'utilisateur clique dessus */
+.newsletter-form input:focus {
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2), 0 15px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.newsletter-form button {
+  padding: 1.2rem 2.5rem;
+  background-color: #ffffff;
+  color: #009B85; /* Texte vert pour une belle harmonie */
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.newsletter-form button:hover {
+  background-color: #f8fafc;
+  color: #007a69;
+  transform: translateY(-4px); /* Élévation dynamique au survol */
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================
+   RESPONSIVE (MOBILES)
+========================================= */
+@media (max-width: 600px) {
+  .newsletter-section {
+    padding: 4rem 5%;
+  }
+  .newsletter-section h2 {
+    font-size: 2.2rem;
+  }
+  .newsletter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .newsletter-form input,
+  .newsletter-form button {
+    max-width: 100%;
+    width: 100%;
+  }
+}

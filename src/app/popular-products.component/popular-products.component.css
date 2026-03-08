@@ -1,0 +1,242 @@
+.popular-section {
+  padding: 4rem 5%;
+  background-color: #fafafa;
+  overflow: hidden; /* Évite les débordements pendant les animations */
+}
+
+/* --- Animations d'entrée --- */
+@keyframes fadeUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- En-tête --- */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  /* Animation de l'en-tête */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.header-text h2 {
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-size: 2.2rem;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.header-text p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* --- Lien "Voir tout" avec flèche animée --- */
+.view-all-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #009B85;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.view-all-link svg {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Effet ressort sur la flèche */
+}
+
+.view-all-link:hover {
+  color: #007a69;
+}
+
+.view-all-link:hover svg {
+  transform: translateX(6px); /* La flèche avance vers la droite */
+}
+
+/* --- Grille de produits --- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* --- Carte Produit (Avec animation d'entrée en cascade) --- */
+.product-card {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  /* Transition plus douce pour le hover */
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Animation d'apparition */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Décalage temporel pour chaque carte (effet cascade) */
+.product-card:nth-child(1) { animation-delay: 0.1s; }
+.product-card:nth-child(2) { animation-delay: 0.2s; }
+.product-card:nth-child(3) { animation-delay: 0.3s; }
+.product-card:nth-child(4) { animation-delay: 0.4s; }
+
+.product-card:hover {
+  transform: translateY(-8px); /* S'élève un peu plus haut */
+  box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05); /* Ombre plus diffuse et premium */
+}
+
+/* --- Image avec effet de Zoom intérieur --- */
+.product-image {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Empêche l'image de dépasser quand elle zoome */
+  border-radius: 8px; /* Sécurité pour les coins */
+}
+
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Transition très fluide */
+}
+
+/* Quand on survole la CARTE, l'IMAGE à l'intérieur zoome */
+.product-card:hover .product-image img {
+  transform: scale(1.08); /* Zoom subtil de 8% */
+}
+
+/* --- Badges --- */
+.badge {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Petite ombre sur le badge */
+}
+
+.badge.new { background-color: #009B85; }
+.badge.promo { background-color: #ef4444; }
+
+/* --- Infos --- */
+.product-info { flex-grow: 1; }
+
+.category {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.title {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+  font-weight: 700;
+  transition: color 0.2s; /* Prépare le changement de couleur au survol */
+}
+
+/* Le titre passe en vert quand on survole la carte */
+.product-card:hover .title {
+  color: #009B85;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.1rem;
+}
+
+.rating-value {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* --- Footer (Prix et Bouton) --- */
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #009B85;
+}
+
+.old-price {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.add-to-cart-btn {
+  background-color: #009B85;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Effet de rebond plus prononcé sur le bouton */
+  transition: background-color 0.3s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.add-to-cart-btn:hover {
+  background-color: #007a69;
+  transform: scale(1.15) rotate(-5deg); /* Le bouton grossit et penche légèrement */
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr; }
+}

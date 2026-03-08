@@ -1,0 +1,132 @@
+/* =========================================
+   ANIMATION D'ENTRÉE
+========================================= */
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   CONTENEUR PRINCIPAL
+========================================= */
+.features-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 5%; /* Un peu plus d'espace pour respirer */
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Ombre beaucoup plus diffuse et élégante */
+  border-bottom: 1px solid #f8fafc;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* =========================================
+   BLOC INDIVIDUEL (FEATURE ITEM)
+========================================= */
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem;
+  border-radius: 12px;
+  flex: 1; /* Permet aux éléments de prendre tout l'espace disponible équitablement */
+  min-width: 220px;
+  background-color: transparent;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, background-color 0.4s ease;
+
+  /* Animation d'apparition en cascade */
+  opacity: 0;
+  animation: fadeUpIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Décalage temporel pour chaque bloc */
+.feature-item:nth-child(1) { animation-delay: 0.1s; }
+.feature-item:nth-child(2) { animation-delay: 0.2s; }
+.feature-item:nth-child(3) { animation-delay: 0.3s; }
+.feature-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Effet au survol du bloc complet */
+.feature-item:hover {
+  transform: translateY(-5px); /* Se soulève légèrement */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  background-color: #fcfcfc; /* Fond très légèrement gris pour détacher la carte */
+}
+
+/* =========================================
+   ICÔNE ET SON CERCLE
+========================================= */
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background-color: #f0fdfa; /* Fond vert pastel très doux */
+  border-radius: 50%; /* Cercle parfait */
+  color: #009B85; /* Couleur de l'icône */
+  flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.4s ease, color 0.4s ease;
+}
+
+.feature-icon svg {
+  width: 24px;
+  height: 24px;
+  transition: color 0.3s ease;
+}
+
+/* Animation de l'icône quand on survole le bloc */
+.feature-item:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg); /* Petit zoom et rotation fun */
+  background-color: #009B85; /* Le cercle devient plein */
+  color: #ffffff; /* L'icône devient blanche */
+}
+
+/* =========================================
+   TEXTES
+========================================= */
+.feature-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-text h4 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  transition: color 0.3s ease;
+}
+
+/* Le titre devient vert au survol */
+.feature-item:hover .feature-text h4 {
+  color: #009B85;
+}
+
+.feature-text p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.4;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 900px) {
+  .features-section {
+    gap: 1.5rem;
+  }
+  .feature-item {
+    flex: none;
+    width: calc(50% - 1.5rem); /* 2 colonnes sur tablette */
+  }
+}
+
+@media (max-width: 600px) {
+  .feature-item {
+    width: 100%; /* 1 colonne sur mobile */
+  }
+}

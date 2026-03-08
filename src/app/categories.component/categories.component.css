@@ -1,0 +1,104 @@
+.categories-section {
+  padding: 4rem 5%;
+  background-color: #ffffff;
+}
+
+/* --- En-tête --- */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-size: 2.5rem;
+  color: #1e293b;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+.section-header p {
+  color: #64748b;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* --- Grille --- */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+  gap: 1.5rem;
+}
+
+/* --- Carte Catégorie --- */
+.category-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden; /* Empêche l'image de déborder quand elle zoome */
+  display: block; /* Nécessaire car c'est une balise <a> */
+  height: 250px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Remplit tout l'espace sans déformer l'image */
+  transition: transform 0.5s ease; /* Animation fluide du zoom */
+}
+
+.category-card:hover .category-image {
+  transform: scale(1.08); /* Zoom de 8% au survol */
+}
+
+/* --- Le dégradé sombre --- */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%; /* Le dégradé ne couvre que le bas de l'image */
+  /* Dégradé allant du noir transparent en bas vers le transparent en haut */
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+  z-index: 1;
+}
+
+/* --- Le Texte --- */
+.category-content {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 2; /* S'assure que le texte est au dessus du dégradé */
+  color: white;
+}
+
+.category-content h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Léger contour pour encore plus de lisibilité */
+}
+
+.product-count {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .categories-grid { grid-template-columns: repeat(2, 1fr); } /* 2 colonnes sur tablette */
+}
+
+@media (max-width: 600px) {
+  .categories-grid { grid-template-columns: 1fr; } /* 1 colonne sur mobile */
+}

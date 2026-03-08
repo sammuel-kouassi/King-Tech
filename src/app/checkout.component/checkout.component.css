@@ -1,0 +1,286 @@
+/* --- Base --- */
+.checkout-page {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 4rem 5%;
+}
+
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 3rem;
+}
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.checkout-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e2e8f0;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.checkout-section:nth-child(1) { animation-delay: 0.1s; }
+.checkout-section:nth-child(2) { animation-delay: 0.2s; }
+.checkout-section:nth-child(3) { animation-delay: 0.3s; }
+
+/* --- Éléments de formulaire --- */
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  color: #1e293b;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  background: #009B85;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group.full { grid-column: span 2; }
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.6rem;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #009B85;
+  box-shadow: 0 0 0 4px rgba(0, 155, 133, 0.1);
+  outline: none;
+}
+
+/* --- Cartes de Livraison --- */
+.shipping-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.shipping-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.shipping-card:hover { border-color: #009B85; }
+
+.shipping-card.active {
+  border-color: #009B85;
+  background-color: #f0fdfa;
+}
+
+.shipping-info { flex-grow: 1; margin-left: 1rem; }
+.method-name { display: block; font-weight: 700; color: #1e293b; }
+.method-desc { font-size: 0.85rem; color: #64748b; }
+.method-price { font-weight: 700; color: #009B85; }
+
+/* --- Résumé à droite --- */
+.summary-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  position: sticky;
+  top: 100px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.summary-totals {
+  border-top: 1px solid #f1f5f9;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  color: #64748b;
+}
+
+.grand-total {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-top: 1rem;
+}
+
+.confirm-order-btn {
+  width: 100%;
+  background: #009B85;
+  color: white;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: all 0.3s;
+}
+
+.confirm-order-btn:hover {
+  background: #007a69;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 155, 133, 0.3);
+}
+
+.security-note {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .checkout-container { grid-template-columns: 1fr; }
+  .checkout-summary { order: -1; } /* Résumé en haut sur mobile */
+}
+
+/* --- Grilles de sélection (Livraison & Paiement) --- */
+.shipping-grid, .payment-selection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.selection-card {
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+}
+
+.selection-card input { position: absolute; opacity: 0; }
+
+.selection-card.active {
+  border-color: #009B85;
+  background-color: #f0fdfa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 155, 133, 0.1);
+}
+
+.card-content .title { display: block; font-weight: 700; color: #1e293b; margin-bottom: 0.2rem; }
+.card-content .desc { display: block; font-size: 0.85rem; color: #64748b; }
+.card-content .price { display: block; margin-top: 0.5rem; color: #009B85; font-weight: 800; }
+
+/* --- Logos de paiement en ligne --- */
+.online-methods-fade {
+  margin-top: 1.5rem;
+  padding: 2rem; /* Plus d'espace interne */
+  background: #ffffff; /* Fond blanc pur pour faire ressortir les logos */
+  border: 1px dashed #009B85; /* Bordure discrète aux couleurs de la marque */
+  border-radius: 12px;
+  animation: fadeIn 0.4s ease;
+}
+
+.method-logos {
+  display: flex;
+  gap: 2rem; /* Plus d'espace entre les logos */
+  align-items: center;
+  justify-content: center; /* Centre les logos pour un rendu pro */
+  flex-wrap: wrap;
+}
+
+.logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;  /* Largeur fixe pour chaque conteneur */
+  height: 60px;  /* Hauteur fixe pour aligner parfaitement */
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.logo-item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Garde les proportions sans déformer */
+  filter: none; /* On enlève le gris pour voir les vraies couleurs */
+  opacity: 0.9;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.logo-item:hover {
+  background: #f0fdfa;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 155, 133, 0.1);
+}
+
+.logo-item:hover img {
+  opacity: 1;
+  transform: scale(1.1); /* Effet de zoom au survol */
+}
+
+/* --- Help Box --- */
+.help-box {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+}
+
+.help-box p { font-size: 0.85rem; color: #64748b; margin-bottom: 1rem; }
+.contact-links { display: flex; flex-direction: column; gap: 0.5rem; }
+.contact-links a { font-size: 0.9rem; color: #009B85; font-weight: 600; text-decoration: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }

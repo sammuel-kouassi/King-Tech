@@ -1,0 +1,54 @@
+<footer class="footer-section">
+  <div class="footer-container">
+
+    <div class="footer-col brand-col">
+      <a routerLink="/" class="footer-logo-link">
+        <img src="assets/images/logo-king-technbg.png" alt="KING-TECH Logo" class="footer-logo-img">
+      </a>
+      <p>Votre partenaire pour tous vos projets électroniques. Kits, composants et modules de qualité.</p>
+    </div>
+
+    <div class="footer-col links-col">
+      <h4>Catégories</h4>
+      <ul>
+        <li>
+          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Kits Arduino' }">Arduino</a>
+        </li>
+        <li>
+          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Raspberry Pi' }">Raspberry Pi</a>
+        </li>
+        <li>
+          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Composants' }">Composants</a>
+        </li>
+        <li>
+          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Robotique' }">Robotique</a>
+        </li>
+        <li>
+          <a [routerLink]="['/boutique']" [queryParams]="{ category: 'Modules' }">Modules</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-col links-col">
+      <h4>Informations</h4>
+      <ul>
+        <li><a routerLink="/a-propos">À propos</a></li>
+        <li><a routerLink="/retours">Retours</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col contact-col">
+      <h4>Contact</h4>
+      <ul class="contact-info">
+        <li>contact&#64;king-tech.com</li>
+        <li>+225 05 94 79 66 55</li>
+        <li>Abidjan, Cote d’Ivoire</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; {{ currentYear }} KING-TECH. Tous droits réservés.</p>
+  </div>
+</footer>

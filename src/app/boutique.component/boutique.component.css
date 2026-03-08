@@ -1,0 +1,256 @@
+/* --- Base & Animations --- */
+.boutique-page {
+  background-color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+@keyframes fadeUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- En-tête vert --- */
+.boutique-header {
+  background-color: #009B85;
+  padding: 2.5rem 5% 4rem; /* Un peu plus de padding pour aérer */
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.boutique-header h1 {
+  color: white;
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-size: 2.8rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  /* Animation d'entrée */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* --- Barre de Recherche --- */
+.search-bar {
+  display: flex;
+  max-width: 600px;
+  gap: 0;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Ombre douce pour détacher la barre du fond vert */
+  /* Animation d'entrée avec délai */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3.2rem; /* Légèrement plus grand pour le confort */
+  border: none;
+  border-radius: 6px 0 0 6px;
+  font-size: 1.05rem;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.search-input-wrapper input:focus {
+  box-shadow: inset 0 0 0 2px rgba(20, 184, 166, 0.3); /* Halo interne au focus */
+}
+
+.search-btn {
+  background-color: #14b8a6;
+  color: white;
+  border: none;
+  padding: 0 2rem;
+  border-radius: 0 6px 6px 0;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #0f766e; /* Vert plus foncé au survol */
+}
+
+/* --- Container principal --- */
+.boutique-container {
+  max-width: 1200px;
+  margin: -2rem auto 0; /* Remonte légèrement sur le fond vert */
+  padding: 0 5% 4rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* --- Pilules de catégories --- */
+.categories-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 3rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Petite carte blanche pour contenir les filtres */
+  /* Animation d'entrée avec délai */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.3s;
+}
+
+.filter-pill {
+  padding: 0.6rem 1.2rem;
+  background-color: #f1f5f9;
+  color: #475569;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.filter-pill:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-2px); /* La pilule se soulève un peu */
+}
+
+.filter-pill.active {
+  background-color: #009B85;
+  color: white;
+  box-shadow: 0 6px 12px rgba(0, 155, 133, 0.25); /* Aura verte sous la pilule active */
+  transform: translateY(-2px);
+}
+
+/* --- Grille de produits --- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* --- Carte Produit (Avec hover Premium) --- */
+.product-card {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Animation d'apparition */
+  opacity: 0;
+  animation: fadeUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.4s;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Image et Effet Zoom --- */
+.product-image {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.08); /* L'image zoome doucement au survol de la carte */
+}
+
+/* --- Badges --- */
+.badge { position: absolute; top: 1.5rem; left: 1.5rem; padding: 0.3rem 0.8rem; border-radius: 20px; color: white; font-size: 0.8rem; font-weight: 600; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.badge.new { background-color: #009B85; }
+.badge.promo { background-color: #ef4444; }
+
+/* --- Infos Textuelles --- */
+.product-info { flex-grow: 1; }
+.category { font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 600; letter-spacing: 0.5px; }
+.title {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+
+.product-card:hover .title {
+  color: #009B85; /* Le titre devient vert au survol */
+}
+
+.rating { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+.stars { display: flex; gap: 0.1rem; }
+.rating-value { font-size: 0.9rem; color: #64748b; }
+
+/* --- Footer & Bouton Panier --- */
+.product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.pricing { display: flex; align-items: baseline; gap: 0.5rem; }
+.price { font-size: 1.25rem; font-weight: 700; color: #009B85; }
+.old-price { font-size: 0.9rem; color: #94a3b8; text-decoration: line-through; }
+
+.add-to-cart-btn {
+  background-color: #009B85;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.add-to-cart-btn:hover {
+  background-color: #007a69;
+  transform: scale(1.15) rotate(-5deg); /* Petit rebond fun */
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .boutique-header h1 { font-size: 2.2rem; }
+}
+@media (max-width: 480px) { .product-grid { grid-template-columns: 1fr; } }

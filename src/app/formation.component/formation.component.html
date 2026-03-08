@@ -1,0 +1,161 @@
+<div class="formation-page">
+
+  <header class="formation-header">
+    <div class="header-container">
+      <h1>
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="header-icon"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+        Formation
+      </h1>
+      <p class="subtitle">Développez vos compétences en électronique et programmation avec nos cours structurés et tutoriels pratiques.</p>
+
+      <div class="header-stats">
+        <span class="stat-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <strong>6</strong> cours
+        </span>
+        <span class="stat-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <strong>188</strong> leçons
+        </span>
+        <span class="stat-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <strong>5,220</strong> étudiants
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="formation-main">
+
+    <div class="main-tabs">
+      @for (tab of mainTabs; track tab) {
+        <button class="main-tab-btn" [class.active]="activeMainTab === tab" (click)="setMainTab(tab)">
+          {{ tab }}
+        </button>
+      }
+    </div>
+
+    @if (activeMainTab === 'Cours') {
+      <div class="category-filters">
+        @for (cat of categories; track cat) {
+          <button class="cat-pill" [class.active]="activeCategory === cat" (click)="setCategory(cat)">
+            {{ cat }}
+          </button>
+        }
+      </div>
+
+      <div class="course-grid">
+        @for (course of filteredCourses; track course.id) {
+          <div class="course-card">
+
+            <div class="course-cover" [style.backgroundColor]="course.bgColor">
+              <span class="course-emoji">{{ course.icon }}</span>
+            </div>
+
+            <div class="course-content">
+              <div class="course-meta-top">
+                <span class="level-badge" [ngClass]="course.levelClass">{{ course.level }}</span>
+                <div class="rating">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#eab308" stroke="#eab308" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <span class="rating-val">{{ course.rating }}</span>
+                </div>
+              </div>
+
+              <h3 class="course-title">{{ course.title }}</h3>
+              <p class="course-desc">{{ course.description }}</p>
+
+              <div class="course-tags">
+                @for (tag of course.tags; track tag) {
+                  <span class="tag">{{ tag }}</span>
+                }
+              </div>
+
+              <div class="course-stats-row">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{ course.duration }}</span>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> {{ course.lessons }} leçons</span>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg> {{ course.students }}</span>
+              </div>
+            </div>
+
+            <div class="course-action">
+              <button class="start-course-btn">
+                Commencer le cours
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+
+    @if (activeMainTab === 'Tutoriels Rapides') {
+      <div class="tutorials-list">
+        @for (tuto of tutorials; track tuto.id) {
+          <a href="#" class="tutorial-item">
+            <div class="play-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </div>
+            <div class="tuto-info">
+              <h3>{{ tuto.title }}</h3>
+              <div class="tuto-meta">
+                <span class="level-badge" [ngClass]="tuto.levelClass">{{ tuto.level }}</span>
+                <span class="time">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  {{ tuto.duration }}
+                </span>
+                <span class="views">{{ tuto.views }} vues</span>
+              </div>
+            </div>
+            <div class="chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </a>
+        }
+      </div>
+    }
+
+    @if (activeMainTab === 'Parcours') {
+      <div class="paths-grid">
+        @for (path of paths; track path.id) {
+          <div class="path-card">
+
+            <div class="path-header">
+              <div class="path-icon">
+                @if (path.id === 1) {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                }
+              </div>
+              <h3>{{ path.title }}</h3>
+            </div>
+
+            <p class="path-desc">{{ path.description }}</p>
+
+            <div class="path-steps">
+              @for (step of path.steps; track step; let i = $index) {
+                <div class="step-item">
+                  <span class="step-number">{{ i + 1 }}</span>
+                  <span class="step-name">{{ step }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="path-meta">
+              <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> {{ path.coursesCount }} cours</span>
+              <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{ path.duration }}</span>
+            </div>
+
+            <button class="follow-path-btn">
+              Suivre ce parcours
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+          </div>
+        }
+      </div>
+    }
+
+  </main>
+</div>

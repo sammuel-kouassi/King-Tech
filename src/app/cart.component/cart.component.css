@@ -1,0 +1,324 @@
+/* =========================================
+   ANIMATIONS
+========================================= */
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeUpItem {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   OVERLAY (Fond sombre)
+========================================= */
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.5); /* Bleu/Gris très foncé et élégant */
+  z-index: 2000;
+  backdrop-filter: blur(3px);
+  /* Animation douce au clic */
+  opacity: 0;
+  animation: fadeInOverlay 0.3s ease forwards;
+}
+
+/* =========================================
+   PANNEAU GLISSANT (Drawer)
+========================================= */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 450px;
+  max-width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 2001;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  /* Entrée fluide avec rebond léger */
+  transform: translateX(100%);
+  animation: slideInRight 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* =========================================
+   EN-TÊTE
+========================================= */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.8rem 2rem;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #ffffff;
+}
+
+.cart-header h2 {
+  margin: 0;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-size: 1.5rem;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+  transform: rotate(90deg); /* La croix tourne élégamment pour se fermer */
+}
+
+/* =========================================
+   CORPS DU PANIER & SCROLLBAR PRO
+========================================= */
+.cart-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+  background-color: #fcfcfc;
+}
+
+.empty-cart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-cart p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Scrollbar discrète (WebKit) */
+.cart-body::-webkit-scrollbar { width: 6px; }
+.cart-body::-webkit-scrollbar-track { background: transparent; }
+.cart-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.cart-body::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* =========================================
+   LISTE DES ARTICLES
+========================================= */
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+/* La carte produit */
+.cart-item-card {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.2rem;
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+
+  /* Animation d'entrée en cascade */
+  opacity: 0;
+  animation: fadeUpItem 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.cart-item-card:hover {
+  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.05);
+  border-color: #e2e8f0;
+}
+
+/* Décalage temporel des articles */
+.cart-item-card:nth-child(1) { animation-delay: 0.1s; }
+.cart-item-card:nth-child(2) { animation-delay: 0.2s; }
+.cart-item-card:nth-child(3) { animation-delay: 0.3s; }
+.cart-item-card:nth-child(4) { animation-delay: 0.4s; }
+
+.cart-item-img {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 0.4rem;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-title {
+  margin: 0 0 0.4rem 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.cart-item-price {
+  color: #009B85;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+}
+
+/* =========================================
+   ACTIONS (Quantité + Poubelle)
+========================================= */
+.cart-item-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+/* Sélecteur de quantité */
+.cart-qty-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background-color: #f8fafc;
+  border-radius: 6px;
+  padding: 0.2rem;
+}
+
+.cart-qty-selector button {
+  background-color: transparent;
+  border: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.cart-qty-selector button:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.cart-qty-selector span {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1e293b;
+  min-width: 16px;
+  text-align: center;
+}
+
+/* Poubelle rouge */
+.cart-remove-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 6px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cart-remove-btn:hover {
+  background-color: #fef2f2; /* Fond rouge très clair */
+  transform: scale(1.1) rotate(5deg); /* Petit effet de secousse */
+}
+
+/* =========================================
+   PIED DE PAGE DU PANIER (Commander)
+========================================= */
+.cart-footer {
+  padding: 1.5rem 2rem 2rem;
+  border-top: 1px solid #f1f5f9;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.total-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.total-amount {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1e293b; /* Le total est souvent plus percutant en noir */
+}
+
+/* Bouton principal */
+.checkout-btn {
+  background-color: #009B85;
+  color: white;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.checkout-btn:hover {
+  background-color: #007a69;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 155, 133, 0.25);
+}
+
+/* Bouton Vider */
+.clear-cart-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem;
+}
+
+.clear-cart-btn:hover {
+  color: #ef4444; /* Devient rouge au survol pour prévenir de l'action */
+  text-decoration: underline;
+}

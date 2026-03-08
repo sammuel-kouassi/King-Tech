@@ -1,0 +1,180 @@
+/* =========================================
+   CONFIGURATION GÉNÉRALE & FIXATION
+========================================= */
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: block;
+  width: 100%;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #009B85;
+  padding: 0.3rem 3rem; /* Padding réduit pour laisser place au grand logo */
+  color: white;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  height: 85px; /* Hauteur stable pour accueillir le logo */
+  transition: all 0.3s ease;
+}
+
+/* =========================================
+   LOGO IMAGE (AGRANDI & NET)
+========================================= */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.navbar-logo-img {
+  height: 65px; /* Augmenté pour un impact visuel fort */
+  width: auto;
+  display: block;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast; /* Netteté accrue */
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2));
+}
+
+.navbar-logo-link:hover {
+  transform: scale(1.1) translateY(-2px);
+}
+
+.navbar-logo-link:hover .navbar-logo-img {
+  filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.3));
+}
+
+/* =========================================
+   NAVIGATION & ONGLETS
+========================================= */
+.navbar-nav {
+  display: flex;
+  list-style-type: none;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-nav a {
+  position: relative;
+  color: white;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+/* Animation de soulignement Premium */
+.navbar-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  border-radius: 2px;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.navbar-nav a:hover::after,
+.navbar-nav a.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* =========================================
+   ICÔNES ET BADGE PANIER
+========================================= */
+.navbar-icons {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.icon-btn:hover {
+  transform: scale(1.15) rotate(3deg);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.cart-btn-container { position: relative; }
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #009B85;
+  animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* =========================================
+   RESPONSIVE MOBILE (CORRIGÉ)
+========================================= */
+@media (max-width: 950px) {
+  .navbar {
+    padding: 0.5rem 5%;
+    height: 75px;
+  }
+
+  .navbar-logo-img { height: 50px; }
+
+  .hamburger-btn { display: flex; order: 3; }
+
+  .navbar-nav {
+    position: absolute;
+    top: 75px; /* Se déploie sous la nav */
+    left: 0;
+    width: 100%;
+    background-color: #008472;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  }
+
+  .navbar-nav.mobile-open { max-height: 400px; }
+
+  .navbar-nav a {
+    padding: 1.2rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar-nav a::after { display: none; }
+}
