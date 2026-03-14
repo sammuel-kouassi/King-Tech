@@ -225,3 +225,91 @@
 
   .nav-search-input { width: 140px; }
 }
+
+/* =========================================
+   MENU UTILISATEUR & AUTHENTIFICATION
+========================================= */
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.3rem 0.3rem 0.3rem 0.4rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.avatar-mini {
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  color: #009B85;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.user-name {
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-logout {
+  color: #fca5a5;
+  padding: 0.4rem;
+}
+.btn-logout:hover {
+  color: #ef4444;
+  background-color: rgba(255, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+.btn-login-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: white;
+  color: #009B85;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-login-nav:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* --- RESPONSIVE MOBILE POUR LE COMPTE --- */
+@media (max-width: 950px) {
+  .user-name {
+    display: none; /* Cache le prénom sur mobile pour gagner de la place */
+  }
+
+  .login-text {
+    display: none; /* Cache le texte "Se connecter", garde juste l'icône */
+  }
+
+  .btn-login-nav {
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+  }
+}

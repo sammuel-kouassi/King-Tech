@@ -10,6 +10,9 @@ import {RetoursComponent} from './pages/retours.component/retours.component';
 import {CheckoutComponent} from './checkout.component/checkout.component';
 import {SuccessComponent} from './success.component/success.component';
 import {AdminDashboardComponent} from './admin-dashboard.component/admin-dashboard.component';
+import {CategorieDetailComponent} from './categorie-detail.component/categorie-detail.component';
+import {DiscussionDetailComponent} from './discussion-detail.component/discussion-detail.component';
+import {AuthComponent} from './auth.component/auth.component';
 
 
 
@@ -24,6 +27,9 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'success', component: SuccessComponent },
   { path: 'admin', component: AdminDashboardComponent },
+  { path: 'communaute/categorie/:id', component: CategorieDetailComponent },
+  { path: 'communaute/discussion/:id', component: DiscussionDetailComponent },
+  { path: 'auth', component: AuthComponent },
   { path: '**', redirectTo: '' },
 ];
 

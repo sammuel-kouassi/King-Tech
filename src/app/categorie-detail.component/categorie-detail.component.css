@@ -1,0 +1,109 @@
+/* Importe ton style de base */
+@import '../communaute.component/communaute.component.css';
+
+.btn-retour {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-retour:hover { background: white; color: #009B85; }
+
+.btn-creer {
+  background-color: white;
+  color: #009B85;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-creer:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+
+/* --- MODALE --- */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+}
+
+.modal-content {
+  background-color: white; width: 90%; max-width: 600px;
+  border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+  padding: 1.5rem; border-bottom: 1px solid #e2e8f0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.modal-header h2 { margin: 0; font-size: 1.25rem; color: #1e293b; }
+.btn-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }
+
+.modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+.form-group label { display: block; font-weight: 600; color: #475569; margin-bottom: 0.5rem; }
+.form-control {
+  width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1;
+  border-radius: 8px; font-size: 1rem; font-family: inherit;
+}
+.form-control:focus { outline: none; border-color: #009B85; box-shadow: 0 0 0 3px rgba(0, 155, 133, 0.1); }
+
+.modal-footer {
+  padding: 1.5rem; border-top: 1px solid #e2e8f0;
+  display: flex; justify-content: flex-end; gap: 1rem;
+}
+
+.btn-annuler { background: none; border: 1px solid #cbd5e1; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; }
+.btn-publier { background: #009B85; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.btn-publier:disabled { background: #94a3b8; cursor: not-allowed; }
+
+
+
+     /* --- STYLE DE LA MODALE DE CONNEXION --- */
+   .prompt-content {
+     text-align: center;
+     padding: 3rem 2rem;
+     max-width: 420px;
+   }
+
+.prompt-icon {
+  background-color: #e6f5f3; /* Vert très clair */
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+.prompt-content h2 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.prompt-content p {
+  color: #64748b;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.prompt-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

@@ -23,6 +23,10 @@ import { BoutiqueComponent } from './boutique.component/boutique.component';
 import { ProductDetailComponent } from './product-detail.component/product-detail.component';
 import {provideHttpClient} from '@angular/common/http';
 import { AdminDashboardComponent } from './admin-dashboard.component/admin-dashboard.component';
+import { CategorieDetailComponent } from './categorie-detail.component/categorie-detail.component';
+import { DiscussionDetailComponent } from './discussion-detail.component/discussion-detail.component';
+import { LoginComponent } from './login.component/login.component';
+import { AuthComponent } from './auth.component/auth.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,8 @@ import { AdminDashboardComponent } from './admin-dashboard.component/admin-dashb
     AProposComponent,
     RetoursComponent,
     Partenaire,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,9 @@ import { AdminDashboardComponent } from './admin-dashboard.component/admin-dashb
     CategoriesComponent,
     BoutiqueComponent,
     ProductDetailComponent,
+    CategorieDetailComponent,
+    DiscussionDetailComponent,
+    AuthComponent,
     CartComponent,
     CheckoutComponent,
     SuccessComponent,

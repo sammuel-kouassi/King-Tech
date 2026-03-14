@@ -1,0 +1,70 @@
+<div class="chat-page">
+  <header class="chat-header">
+    <div class="header-content">
+      <button class="btn-retour" (click)="retour()">← Retour</button>
+      @if (discussion) {
+        <div class="discussion-info">
+          <span class="tag">{{ discussion.typeSujet || 'Discussion' }}</span>
+          <h1>{{ discussion.titre }}</h1>
+          <p>Lancé par <strong>{{ discussion.nomAuteur }}</strong> le {{ discussion.dateCreation | date:'dd/MM/yyyy à HH:mm' }}</p>
+        </div>
+      }
+    </div>
+  </header>
+
+  <main class="chat-body">
+    <div class="messages-container">
+      @for (msg of messages; track msg.id) {
+        <div class="message-bubble">
+          <div class="avatar">{{ msg.initialesAuteur }}</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <strong>{{ msg.nomAuteur }}</strong>
+              <span class="date">{{ msg.dateCreation | date:'HH:mm - dd MMM' }}</span>
+            </div>
+            <p class="text">{{ msg.contenu }}</p>
+          </div>
+        </div>
+      }
+
+      @if (messages.length === 0) {
+        <div class="empty-state">
+          <p>Aucun message. Soyez le premier à répondre !</p>
+        </div>
+      }
+    </div>
+  </main>
+
+  <footer class="chat-footer">
+    <div class="input-area">
+      <textarea
+        [(ngModel)]="nouveauMessage.contenu"
+        placeholder="Écrivez votre réponse ici..."
+        (keyup.enter)="envoyerMessage()"></textarea>
+      <button class="btn-envoyer" (click)="envoyerMessage()" [disabled]="!nouveauMessage.contenu.trim()">
+        Envoyer
+      </button>
+    </div>
+  </footer>
+</div>
+
+@if (showLoginPrompt) {
+  <div class="modal-overlay" (click)="fermerLoginPrompt()">
+    <div class="modal-content prompt-content" (click)="$event.stopPropagation()">
+
+      <div class="prompt-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#009B85" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+
+      <h2>Connexion requise</h2>
+      <p>Vous devez être connecté à votre compte pour répondre à cette discussion et aider la communauté.</p>
+
+      <div class="prompt-actions">
+        <button class="btn-annuler" (click)="fermerLoginPrompt()">Plus tard</button>
+        <button class="btn-publier" (click)="allerVersConnexion()">Se connecter</button>
+      </div>
+
+    </div>
+  </div>
+}
+

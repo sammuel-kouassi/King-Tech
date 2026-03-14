@@ -49,8 +49,7 @@
                 </span>
               </td>
               <td>
-                <button class="btn-action">Détails</button>
-              </td>
+                <button class="btn-action" (click)="ouvrirDetails(cmd)">Détails</button>              </td>
             </tr>
           }
           @if (commandes.length === 0) {
@@ -63,3 +62,62 @@
     </div>
   </div>
 </div>
+
+@if (isModalOpen && selectedCommande) {
+  <div class="modal-overlay" (click)="fermerModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="header-info">
+          <h2>Commande {{ selectedCommande.numeroCommande }}</h2>
+          <span class="badge-status" [ngClass]="selectedCommande.statut.toLowerCase()">
+          {{ selectedCommande.statut }}
+        </span>
+        </div>
+        <button class="btn-close" (click)="fermerModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="client-info-card">
+          <h3>Informations Client</h3>
+          <p><strong>Nom :</strong> {{ selectedCommande.nomClient }}</p>
+          <p><strong>Téléphone :</strong> {{ selectedCommande.telephone }}</p>
+          <p><strong>Email :</strong> {{ selectedCommande.emailClient }}</p>
+          <p><strong>Adresse :</strong> {{ selectedCommande.adresseLivraison }}</p>
+        </div>
+
+        <div class="order-items">
+          <h3>Produits Achetés</h3>
+          <table class="items-table">
+            <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Prix Unitaire</th>
+              <th>Quantité</th>
+              <th>Sous-total</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (ligne of selectedCommande.lignes; track ligne.id) {
+                <tr>
+                  <td><strong>{{ ligne.produit.nom }}</strong></td>
+                  <td>{{ ligne.prixUnitaire | number:'1.2-2' }} FCFA</td>
+                  <td>x{{ ligne.quantite }}</td>
+                  <td>{{ ligne.sousTotal | number:'1.2-2' }} FCFA</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-total">
+          <span>Total de la commande :</span>
+          <strong>{{ selectedCommande.total | number:'1.2-2' }} FCFA</strong>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

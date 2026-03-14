@@ -1,7 +1,18 @@
-// Ce qu'on envoie au backend (La requête)
 export interface LigneCommandeRequest {
   produitId: number;
   quantite: number;
+}
+
+export interface LigneCommandeResponse {
+  id: number;
+  produit: {
+    id: number;
+    nom: string;
+    prix: number;
+  };
+  quantite: number;
+  prixUnitaire: number;
+  sousTotal: number;
 }
 
 export interface CommandeRequest {
@@ -12,7 +23,6 @@ export interface CommandeRequest {
   lignes: LigneCommandeRequest[];
 }
 
-// Ce que le backend nous répond (La réponse avec le numéro généré)
 export interface CommandeResponse {
   id: number;
   numeroCommande: string;
@@ -20,4 +30,9 @@ export interface CommandeResponse {
   total: number;
   statut: string;
   nomClient: string;
+  emailClient: string;         // <-- NOUVEAU
+  adresseLivraison: string;    // <-- NOUVEAU
+  telephone: string;           // <-- NOUVEAU
+  lignes: LigneCommandeResponse[]; // <-- NOUVEAU
 }
+

@@ -1,91 +1,141 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // <-- INDISPENSABLE POUR LE CHAT
+import { RouterLink, Router } from '@angular/router'; // <-- AJOUT DE ROUTER
+import { ForumService } from '../services/forum.service';
+import { ExpertService } from '../services/expert.service'; // <-- AJOUT
+import { AuthService } from '../services/auth.service'; // <-- AJOUT
+import { Categorie, Discussion } from '../models/forum.model';
 
 @Component({
   selector: 'app-communaute',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink, FormsModule], // <-- AJOUTER FormsModule
   templateUrl: './communaute.component.html',
   styleUrls: ['./communaute.component.css']
 })
-export class CommunauteComponent {
-  // Onglet actif par défaut
-  activeTab = 'categories';
+export class CommunauteComponent implements OnInit {
+  private forumService = inject(ForumService);
+  private expertService = inject(ExpertService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
-  // Liste des catégories du forum
-  forumCategories = [
-    {
-      id: 1,
-      title: 'Arduino & Microcontrôleurs',
-      stats: '342 sujets · 2,871 messages',
-      icon: '🔧', // Tu pourras remplacer ces emojis par des images/SVG plus tard si tu préfères
-      bgColor: '#f1f5f9' // Gris très clair
-    },
-    {
-      id: 2,
-      title: 'Raspberry Pi',
-      stats: '198 sujets · 1,540 messages',
-      icon: '🍓',
-      bgColor: '#fce7f3' // Rose pastel
-    },
-    {
-      id: 3,
-      title: 'Robotique',
-      stats: '156 sujets · 1,230 messages',
-      icon: '🤖',
-      bgColor: '#e0e7ff' // Bleu pastel
-    },
-    {
-      id: 4,
-      title: 'Composants & Modules',
-      stats: '210 sujets · 1,780 messages',
-      icon: '🔌',
-      bgColor: '#ffedd5' // Orange pastel
-    },
-    {
-      id: 5,
-      title: 'Projets & Showcase',
-      stats: '89 sujets · 654 messages',
-      icon: '🚀',
-      bgColor: '#f3e8ff' // Violet pastel
-    },
-    {
-      id: 6,
-      title: 'Aide & Dépannage',
-      stats: '425 sujets · 3,120 messages',
-      icon: '🆘',
-      bgColor: '#ffe4e6' // Rouge/Rose pastel
+  ongletActif: 'categories' | 'discussions' | 'expert' = 'categories';
+
+  categories: Categorie[] = [];
+  discussions: Discussion[] = [];
+
+  // --- VARIABLES POUR L'ONGLET EXPERT ---
+  experts: any[] = [];
+  selectedExpert: any = null;
+  messagesExpert: any[] = [];
+  nouveauMessageExpert: string = '';
+
+  utilisateurActuel: any = null;
+  showLoginPrompt = false;
+
+  stats = {
+    membres: 0,
+    messages: 0,
+    experts: 0
+  };
+
+  ngOnInit() {
+    this.utilisateurActuel = this.authService.currentUserValue;
+    this.chargerDonnees();
+  }
+
+  chargerDonnees() {
+    // 1. Chargement des Catégories
+    this.forumService.getCategories().subscribe({
+      next: (data) => { this.categories = data; this.cdr.detectChanges(); },
+      error: (err) => console.error('Erreur catégories', err)
+    });
+
+    // 2. Chargement des Discussions
+    this.forumService.getDernieresDiscussions().subscribe({
+      next: (data) => { this.discussions = data; this.cdr.detectChanges(); },
+      error: (err) => console.error('Erreur discussions', err)
+    });
+
+    // 3. NOUVEAU : Chargement des Experts depuis Spring Boot
+    this.expertService.getExperts().subscribe({
+      next: (data) => {
+        this.experts = data;
+        // On sélectionne le premier expert par défaut s'il y en a un
+        if (this.experts.length > 0) {
+          this.selectedExpert = this.experts[0];
+          this.chargerConversationExpert();
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur experts', err)
+    });
+
+    this.forumService.getStats().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur stats', err)
+    });
+  }
+
+  changerOnglet(onglet: 'categories' | 'discussions' | 'expert') {
+    this.ongletActif = onglet;
+    // Si on bascule sur l'onglet expert, on recharge la conversation au cas où
+    if (onglet === 'expert') {
+      this.utilisateurActuel = this.authService.currentUserValue;
+      this.chargerConversationExpert();
     }
-  ];
+    this.cdr.detectChanges();
+  }
 
-  // ... (Garde forumCategories existant)
+  // --- LOGIQUE DE MESSAGERIE EXPERT ---
 
-  // Données pour l'onglet "Dernières Discussions"
-  discussions = [
-    { initials: 'EP', title: 'Comment alimenter 5 servos simultanément ?', author: 'ElectroPierre', category: 'Arduino & Microcontrôleurs', time: '6 min', comments: 12, views: 234, pinned: false },
-    { initials: 'MS', title: 'Robot suiveur de ligne – partage de mon projet', author: 'MakerSophie', category: 'Projets & Showcase', time: '15 min', comments: 28, views: 512, pinned: true },
-    { initials: 'TA', title: 'Raspberry Pi 5 : benchmark complet de performances', author: 'TechAlex', category: 'Raspberry Pi', time: '32 min', comments: 45, views: 890, pinned: false }
-  ];
-
-  // Données pour l'onglet "Parler à un Expert"
-  experts = [
-    { id: 1, initials: 'ML', name: 'Dr. Martin Leclerc', specialty: 'Arduino & IoT', responseTime: '~15 min', online: true },
-    { id: 2, initials: 'SD', name: 'Ing. Sarah Dupont', specialty: 'Raspberry Pi & Linux', responseTime: '~30 min', online: true },
-    { id: 3, initials: 'KB', name: 'Prof. Karim Bensaid', specialty: 'Robotique & IA', responseTime: '~2h', online: false },
-    { id: 4, initials: 'JM', name: 'Julie Martin', specialty: 'Électronique Analogique', responseTime: '~20 min', online: false }
-  ];
-
-  // L'expert sélectionné par défaut dans le chat
-  selectedExpert = this.experts[0];
-
-  // Méthode pour changer d'expert dans le chat
   selectExpert(expert: any) {
     this.selectedExpert = expert;
+    this.chargerConversationExpert();
   }
 
-  // Méthode pour changer d'onglet
-  setTab(tab: string) {
-    this.activeTab = tab;
+  chargerConversationExpert() {
+    if (!this.utilisateurActuel || !this.selectedExpert) return;
+
+    this.expertService.getConversation(this.utilisateurActuel.id, this.selectedExpert.id)
+      .subscribe({
+        next: (data) => {
+          this.messagesExpert = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Erreur chat', err)
+      });
   }
+
+  envoyerMessageExpert() {
+    // Le vigile bloque si non connecté
+    if (!this.utilisateurActuel) {
+      this.showLoginPrompt = true;
+      return;
+    }
+
+    if (!this.nouveauMessageExpert.trim() || !this.selectedExpert) return;
+
+    this.expertService.envoyerMessage(
+      this.utilisateurActuel.id,
+      this.selectedExpert.id,
+      this.nouveauMessageExpert
+    ).subscribe({
+      next: (msg) => {
+        this.messagesExpert.push(msg); // Ajoute la bulle à l'écran
+        this.nouveauMessageExpert = ''; // Vide l'input
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error("Erreur envoi message", err)
+    });
+  }
+
+  // Gestion de la modale de connexion
+  fermerLoginPrompt() { this.showLoginPrompt = false; }
+  allerVersConnexion() { this.router.navigate(['/auth']); }
 }

@@ -1,0 +1,98 @@
+<div class="communaute-page">
+  <header class="communaute-header" style="padding: 3rem 5% 4rem;">
+    <div class="header-container">
+      <button class="btn-retour" (click)="retour()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Retour aux catégories
+      </button>
+
+      <div class="header-action-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+        <h1>{{ categorieNom }}</h1>
+        <button class="btn-creer" (click)="ouvrirModal()">+ Nouvelle Discussion</button>
+      </div>
+      <p class="subtitle">Retrouvez toutes les discussions, projets et questions liés à cette thématique.</p>
+    </div>
+  </header>
+
+  <main class="communaute-main">
+    <div class="discussions-list">
+      @for (disc of discussions; track disc.id) {
+
+        <a [routerLink]="['/communaute/discussion', disc.id]" class="discussion-card" style="text-decoration: none; color: inherit; display: flex;">
+          <div class="avatar-circle">{{ disc.initialesAuteur }}</div>
+
+          <div class="disc-content">
+            <div class="disc-header">
+              @if (disc.epingle) { <span class="badge-pinned">ÉPINGLÉ</span> }
+              <h3>{{ disc.titre }}</h3>
+            </div>
+            <div class="disc-meta">
+              <span class="author">{{ disc.nomAuteur }}</span>
+              @if (disc.typeSujet) { <span class="category-tag">{{ disc.typeSujet }}</span> }
+              <span class="time">
+                {{ disc.dateCreation | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+            </div>
+          </div>
+        </a>
+      }
+
+      @if (discussions.length === 0) {
+        <p class="empty-state">Aucune discussion dans cette catégorie pour le moment. Soyez le premier !</p>
+      }
+    </div>
+  </main>
+
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="fermerModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Lancer une discussion</h2>
+          <button class="btn-close" (click)="fermerModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Type de sujet</label>
+            <select [(ngModel)]="nouvelleDiscussion.typeSujet" class="form-control">
+              @for (sujet of sujetsPredefinis; track sujet) {
+                <option [value]="sujet">{{ sujet }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Titre de la discussion</label>
+            <input type="text" [(ngModel)]="nouvelleDiscussion.titre" class="form-control" placeholder="Ex: Comment brancher un capteur ultrasons ?">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-annuler" (click)="fermerModal()">Annuler</button>
+          <button class="btn-publier" (click)="creerDiscussion()" [disabled]="!nouvelleDiscussion.titre">Publier</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+@if (showLoginPrompt) {
+  <div class="modal-overlay" (click)="fermerLoginPrompt()">
+    <div class="modal-content prompt-content" (click)="$event.stopPropagation()">
+
+      <div class="prompt-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#009B85" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+
+      <h2>Connexion requise</h2>
+      <p>Vous devez être connecté à votre compte KING-TECH pour pouvoir lancer une discussion et échanger avec la communauté.</p>
+
+      <div class="prompt-actions">
+        <button class="btn-annuler" (click)="fermerLoginPrompt()">Plus tard</button>
+        <button class="btn-publier" (click)="allerVersConnexion()">Se connecter</button>
+      </div>
+
+    </div>
+  </div>
+}
+

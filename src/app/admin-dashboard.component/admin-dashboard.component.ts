@@ -1,5 +1,4 @@
 import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CommandeService } from '../services/commande.service';
 import { CommandeResponse } from '../models/commande.model';
 
@@ -12,7 +11,9 @@ import { CommandeResponse } from '../models/commande.model';
 export class AdminDashboardComponent implements OnInit {
 
   private commandeService = inject(CommandeService);
-  private cdr = inject(ChangeDetectorRef); // <-- AJOUT ICI
+  private cdr = inject(ChangeDetectorRef);
+  selectedCommande: CommandeResponse | null = null;
+  isModalOpen = false;
 
   commandes: CommandeResponse[] = [];
   chiffreAffairesTotal: number = 0;
@@ -39,9 +40,25 @@ export class AdminDashboardComponent implements OnInit {
         console.error('Erreur lors du chargement des commandes', err);
       }
     });
-  }
 
+  }
   changerStatut(id: number, nouveauStatut: string) {
     console.log(`Changement du statut de la commande ${id} en ${nouveauStatut}`);
+  }
+
+  ouvrirDetails(cmd: CommandeResponse) {
+    this.selectedCommande = cmd;
+    this.isModalOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Méthode pour fermer la modale
+  fermerModal() {
+    this.isModalOpen = false;
+    document.body.style.overflow = 'auto';
+    // On attend la fin de l'animation CSS (300ms) avant de vider la commande
+    setTimeout(() => {
+      this.selectedCommande = null;
+    }, 300);
   }
 }
