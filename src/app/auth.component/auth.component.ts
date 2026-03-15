@@ -13,7 +13,6 @@ declare var google: any;
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-// Garde tes imports en haut
 
 export class AuthComponent implements AfterViewInit {
   ngAfterViewInit() {
@@ -34,7 +33,6 @@ export class AuthComponent implements AfterViewInit {
     // On envoie le token à Spring Boot
     this.authService.loginWithGoogle(tokenGoogle).subscribe({
       next: (utilisateur) => {
-        // Si tout s'est bien passé, on redirige vers le forum !
         this.router.navigate(['/communaute']);
       },
       error: (err) => {

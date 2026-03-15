@@ -27,4 +27,9 @@ export class ExpertService {
       payload
     );
   }
+
+  // Récupérer les clients qui ont contacté l'expert
+  getClientsPourExpert(expertId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${expertId}/clients`);
+  }
 }

@@ -10,7 +10,7 @@ import { Categorie, Discussion } from '../models/forum.model';
 @Component({
   selector: 'app-communaute',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule], // <-- AJOUTER FormsModule
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './communaute.component.html',
   styleUrls: ['./communaute.component.css']
 })
@@ -26,11 +26,14 @@ export class CommunauteComponent implements OnInit {
   categories: Categorie[] = [];
   discussions: Discussion[] = [];
 
-  // --- VARIABLES POUR L'ONGLET EXPERT ---
   experts: any[] = [];
   selectedExpert: any = null;
   messagesExpert: any[] = [];
   nouveauMessageExpert: string = '';
+  isExpertMode = false;
+  contacts: any[] = [];
+  contactSelectionne: any = null;
+
 
   utilisateurActuel: any = null;
   showLoginPrompt = false;
@@ -84,14 +87,45 @@ export class CommunauteComponent implements OnInit {
 
   changerOnglet(onglet: 'categories' | 'discussions' | 'expert') {
     this.ongletActif = onglet;
-    // Si on bascule sur l'onglet expert, on recharge la conversation au cas où
     if (onglet === 'expert') {
       this.utilisateurActuel = this.authService.currentUserValue;
-      this.chargerConversationExpert();
+      this.chargerListeContacts(); // On charge la bonne liste selon le rôle !
     }
     this.cdr.detectChanges();
   }
 
+  chargerListeContacts() {
+    if (this.utilisateurActuel && this.utilisateurActuel.role === 'EXPERT') {
+      // MODE EXPERT : On charge ses clients
+      this.isExpertMode = true;
+      this.expertService.getClientsPourExpert(this.utilisateurActuel.id).subscribe({
+        next: (data) => {
+          this.contacts = data;
+          if (this.contacts.length > 0) {
+            this.selectContact(this.contacts[0]);
+          }
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      // MODE CLIENT (ou non connecté) : On charge les experts
+      this.isExpertMode = false;
+      this.expertService.getExperts().subscribe({
+        next: (data) => {
+          this.contacts = data;
+          if (this.contacts.length > 0) {
+            this.selectContact(this.contacts[0]);
+          }
+          this.cdr.detectChanges();
+        }
+      });
+    }
+  }
+
+  selectContact(contact: any) {
+    this.contactSelectionne = contact;
+    this.chargerConversationExpert();
+  }
   // --- LOGIQUE DE MESSAGERIE EXPERT ---
 
   selectExpert(expert: any) {
@@ -100,38 +134,42 @@ export class CommunauteComponent implements OnInit {
   }
 
   chargerConversationExpert() {
-    if (!this.utilisateurActuel || !this.selectedExpert) return;
+    if (!this.utilisateurActuel || !this.contactSelectionne) {
+      console.log("Erreur : Utilisateur ou Contact manquant !");
+      return;
+    }
 
-    this.expertService.getConversation(this.utilisateurActuel.id, this.selectedExpert.id)
+    console.log("--> DÉMARRAGE DU CHAT <--");
+    console.log("1. Mon ID (Moi) :", this.utilisateurActuel.id);
+    console.log("2. ID du Contact (Lui) :", this.contactSelectionne.id);
+
+    this.expertService.getConversation(this.utilisateurActuel.id, this.contactSelectionne.id)
       .subscribe({
         next: (data) => {
+          console.log("3. Succès ! Messages reçus :", data);
           this.messagesExpert = data;
           this.cdr.detectChanges();
         },
-        error: (err) => console.error('Erreur chat', err)
+        error: (err) => {
+          console.error("3. Aïe ! Erreur serveur :", err);
+        }
       });
   }
 
   envoyerMessageExpert() {
-    // Le vigile bloque si non connecté
-    if (!this.utilisateurActuel) {
-      this.showLoginPrompt = true;
-      return;
-    }
-
-    if (!this.nouveauMessageExpert.trim() || !this.selectedExpert) return;
+    if (!this.utilisateurActuel) { this.showLoginPrompt = true; return; }
+    if (!this.nouveauMessageExpert.trim() || !this.contactSelectionne) return;
 
     this.expertService.envoyerMessage(
       this.utilisateurActuel.id,
-      this.selectedExpert.id,
+      this.contactSelectionne.id,
       this.nouveauMessageExpert
     ).subscribe({
       next: (msg) => {
-        this.messagesExpert.push(msg); // Ajoute la bulle à l'écran
-        this.nouveauMessageExpert = ''; // Vide l'input
+        this.messagesExpert.push(msg);
+        this.nouveauMessageExpert = '';
         this.cdr.detectChanges();
-      },
-      error: (err) => console.error("Erreur envoi message", err)
+      }
     });
   }
 
