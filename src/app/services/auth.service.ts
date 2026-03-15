@@ -40,4 +40,14 @@ export class AuthService {
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
+
+  loginWithGoogle(token: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/google`, { token: token }).pipe(
+      tap((user) => {
+        // On sauvegarde l'utilisateur comme pour une connexion normale
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+      })
+    );
+  }
 }

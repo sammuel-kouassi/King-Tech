@@ -1,8 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject,AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+
+declare var google: any;
 
 @Component({
   selector: 'app-auth',
@@ -13,12 +15,41 @@ import { AuthService } from '../services/auth.service';
 })
 // Garde tes imports en haut
 
-export class AuthComponent {
+export class AuthComponent implements AfterViewInit {
+  ngAfterViewInit() {
+    google.accounts.id.initialize({
+      client_id: '741902731114-9v8hb1h0laa6rpecl44cmhrm16a6g2in.apps.googleusercontent.com', // <--- REMPLACE PAR TON VRAI CODE !
+      callback: (response: any) => this.gererConnexionGoogle(response)
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("google-btn"),
+      { theme: "outline", size: "large", text: "continue_with" } // Style officiel Google
+    );
+  }
+
+  gererConnexionGoogle(response: any) {
+    const tokenGoogle = response.credential;
+
+    // On envoie le token à Spring Boot
+    this.authService.loginWithGoogle(tokenGoogle).subscribe({
+      next: (utilisateur) => {
+        // Si tout s'est bien passé, on redirige vers le forum !
+        this.router.navigate(['/communaute']);
+      },
+      error: (err) => {
+        this.erreurMessage = "Échec de l'authentification avec Google.";
+        console.error("Erreur Google:", err);
+      }
+    });
+  }
+
   private authService = inject(AuthService);
   private router = inject(Router);
 
   isRegisterMode = false;
   showSuccessModal = false; // NOUVEAU : Contrôle la modale de succès
+
 
   nom = '';
   prenom = '';
@@ -73,9 +104,10 @@ export class AuthComponent {
     }
   }
 
-  // NOUVELLE MÉTHODE : Ferme la modale et redirige
   fermerSuccessModal() {
     this.showSuccessModal = false;
     this.router.navigate(['/communaute']);
   }
+
+
 }
