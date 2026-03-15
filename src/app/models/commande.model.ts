@@ -30,9 +30,9 @@ export interface CommandeResponse {
   total: number;
   statut: string;
   nomClient: string;
-  emailClient: string;         // <-- NOUVEAU
-  adresseLivraison: string;    // <-- NOUVEAU
-  telephone: string;           // <-- NOUVEAU
-  lignes: LigneCommandeResponse[]; // <-- NOUVEAU
+  emailClient: string;
+  adresseLivraison: string;
+  telephone: string;
+  lignes: LigneCommandeResponse[];
 }
 

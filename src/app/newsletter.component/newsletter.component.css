@@ -163,3 +163,32 @@
     width: 100%;
   }
 }
+
+/* =========================================
+   MESSAGES DE RETOUR (SUCCÈS / ERREUR)
+========================================= */
+.newsletter-message {
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  display: inline-block;
+  animation: fadeUpIn 0.4s ease-out forwards;
+}
+
+/* Style de succès intégré au fond vert */
+.newsletter-message.success {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+/* Style d'erreur doux */
+.newsletter-message.error {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fee2e2;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  backdrop-filter: blur(4px);
+}

@@ -32,8 +32,6 @@ export class AdminDashboardComponent implements OnInit {
         // Calcul des statistiques rapides
         this.nombreCommandes = this.commandes.length;
         this.chiffreAffairesTotal = this.commandes.reduce((sum, cmd) => sum + cmd.total, 0);
-
-        // <-- MAGIE : On force l'affichage immédiat
         this.cdr.detectChanges();
       },
       error: (err) => {

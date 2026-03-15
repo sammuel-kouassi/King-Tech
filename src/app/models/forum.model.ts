@@ -1,7 +1,7 @@
 export interface Categorie {
   id: number;
   nom: string;
-  icone: string; // Ex: 'assets/images/arduino-icon.png' ou une classe CSS
+  icone: string;
   nombreSujets: number;
   nombreMessages: number;
 }
@@ -10,7 +10,7 @@ export interface Discussion {
   id: number;
   titre: string;
   nomAuteur: string;
-  initialesAuteur: string; // Ex: 'MS' pour MakerSophie
+  initialesAuteur: string;
   dateCreation: string;
   nombreReponses: number;
   nombreVues: number;

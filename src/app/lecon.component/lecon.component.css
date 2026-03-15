@@ -1,0 +1,24 @@
+.lecon-layout { background-color: #f1f5f9; min-height: 100vh; }
+.lecon-nav { background-color: #009B85; color: white; padding: 1rem 5%; display: flex; align-items: center; gap: 2rem; }
+.back-btn { display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; font-weight: 500; }
+.back-btn:hover { text-decoration: underline; }
+.lecon-nav h2 { margin: 0; font-size: 1.2rem; font-weight: 400; opacity: 0.9; }
+
+.lecon-container { display: flex; flex-wrap: wrap; gap: 2rem; padding: 2rem 5%; max-width: 1400px; margin: 0 auto; }
+
+.video-section { flex: 1; min-width: 60%; }
+.video-player { width: 100%; aspect-ratio: 16/9; background-color: #1e293b; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); cursor: pointer; }
+.play-overlay { width: 80px; height: 80px; background-color: rgba(0, 155, 133, 0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+.video-player:hover .play-overlay { transform: scale(1.1); }
+.video-info { margin-top: 1.5rem; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.video-info h3 { margin-top: 0; color: #0f172a; }
+.video-info p { color: #64748b; line-height: 1.6; }
+
+.playlist-section { width: 350px; background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); align-self: flex-start; }
+.playlist-header h3 { margin-top: 0; margin-bottom: 1rem; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; }
+.playlist-items { list-style: none; padding: 0; margin: 0; }
+.playlist-items li { display: flex; align-items: center; gap: 1rem; padding: 1rem 0.5rem; border-bottom: 1px solid #f1f5f9; cursor: pointer; color: #475569; transition: all 0.2s; }
+.playlist-items li:hover { background-color: #f8fafc; color: #009B85; }
+.playlist-items li.active { background-color: #ecfdf5; color: #009B85; font-weight: 500; border-radius: 6px; }
+.playlist-items li span:nth-child(2) { flex: 1; font-size: 0.95rem; }
+.playlist-items li .time { font-size: 0.8rem; color: #94a3b8; }

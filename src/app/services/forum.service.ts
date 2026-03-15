@@ -17,7 +17,7 @@ export class ForumService {
   getDernieresDiscussions(): Observable<Discussion[]> {
     return this.http.get<Discussion[]>(`${this.apiUrl}/discussions`);
   }
-  // NOUVEAU : Récupérer les discussions d'une catégorie spécifique
+  //Récupérer les discussions d'une catégorie spécifique
   getDiscussionsParCategorie(categorieId: number): Observable<Discussion[]> {
     return this.http.get<Discussion[]>(`${this.apiUrl}/categories/${categorieId}/discussions`);
   }

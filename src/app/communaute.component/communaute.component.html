@@ -29,7 +29,10 @@
 
     <div class="search-bar">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" placeholder="Rechercher dans le forum...">
+      <input
+        type="text"
+        placeholder="Rechercher dans le forum..."
+        [(ngModel)]="searchTerm">
     </div>
 
     <div class="tabs-container">
@@ -40,7 +43,7 @@
 
     @if (ongletActif === 'categories') {
       <div class="forum-list">
-        @for (cat of categories; track cat.id) {
+        @for (cat of filteredCategories; track cat.id) {
           <a [routerLink]="['/communaute/categorie', cat.id]" class="forum-card">
 
             <div class="icon-wrapper">
@@ -58,15 +61,15 @@
 
           </a>
         }
-        @if (categories.length === 0) {
-          <p class="empty-state">Aucune catégorie disponible pour le moment.</p>
+        @if (filteredCategories.length === 0) {
+          <p class="empty-state">Aucun résultat trouvé pour votre recherche.</p>
         }
       </div>
     }
 
     @if (ongletActif === 'discussions') {
       <div class="discussions-list">
-        @for (disc of discussions; track disc.id) {
+        @for (disc of filteredDiscussions; track disc.id) {
           <div class="discussion-card">
             <div class="avatar-circle">{{ disc.initialesAuteur }}</div>
 
@@ -96,8 +99,8 @@
             </div>
           </div>
         }
-        @if (discussions.length === 0) {
-          <p class="empty-state">Soyez le premier à lancer une discussion !</p>
+        @if (filteredDiscussions.length === 0) {
+          <p class="empty-state">Aucune discussion ne correspond à votre recherche.</p>
         }
       </div>
     }
@@ -111,7 +114,7 @@
             {{ isExpertMode ? 'Mes Clients' : 'Nos Experts' }}
           </h3>
           <div class="experts-list">
-            @for (contact of contacts; track contact.id) {
+            @for (contact of filteredContacts; track contact.id) {
               <div class="expert-card" [class.active]="contactSelectionne?.id === contact.id" (click)="selectContact(contact)">
                 <div class="expert-avatar">
                   {{ contact.prenom.charAt(0) }}{{ contact.nom.charAt(0) }}
@@ -123,8 +126,8 @@
                 </div>
               </div>
             }
-            @if (contacts.length === 0 && isExpertMode) {
-              <p style="padding: 1rem; color: #64748b; font-size: 0.9rem; text-align: center;">Aucun message reçu pour le moment.</p>
+            @if (filteredContacts.length === 0) {
+              <p style="padding: 1rem; color: #64748b; font-size: 0.9rem; text-align: center;">Aucun résultat trouvé.</p>
             }
           </div>
         </aside>
@@ -206,5 +209,3 @@
   }
 
 </div>
-
-

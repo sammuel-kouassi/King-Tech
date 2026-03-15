@@ -11,15 +11,15 @@
       <div class="header-stats">
         <span class="stat-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          <strong>6</strong> cours
+          <strong>{{ totalCours }}</strong> cours
         </span>
         <span class="stat-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          <strong>188</strong> leçons
+          <strong>{{ totalLecons }}</strong> leçons
         </span>
         <span class="stat-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          <strong>5,220</strong> étudiants
+          <strong>{{ totalEtudiants | number:'1.0-0' }}</strong> étudiants
         </span>
       </div>
     </div>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="course-action">
-              <button class="start-course-btn">
+              <button class="start-course-btn" [routerLink]="['/lecon', 'cours', course.id]">
                 Commencer le cours
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
@@ -92,7 +92,7 @@
     @if (activeMainTab === 'Tutoriels Rapides') {
       <div class="tutorials-list">
         @for (tuto of tutorials; track tuto.id) {
-          <a href="#" class="tutorial-item">
+          <a [routerLink]="['/lecon', 'tuto', tuto.id]" class="tutorial-item">
             <div class="play-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             </div>
@@ -147,7 +147,7 @@
               <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{ path.duration }}</span>
             </div>
 
-            <button class="follow-path-btn">
+            <button class="follow-path-btn" [routerLink]="['/lecon', 'parcours', path.id]">
               Suivre ce parcours
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>

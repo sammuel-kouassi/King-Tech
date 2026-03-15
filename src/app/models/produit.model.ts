@@ -19,6 +19,6 @@ export interface ProduitDetail {
   stock: number;
   note: number;
   badge: string;
-  images: string[]; // Le tableau des 3 images
-  caracteristiques: { [key: string]: string }; // L'équivalent TypeScript du JSONB de PostgreSQL
+  images: string[];
+  caracteristiques: { [key: string]: string };
 }

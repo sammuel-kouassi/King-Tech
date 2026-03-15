@@ -1,10 +1,10 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // <-- INDISPENSABLE POUR LE CHAT
-import { RouterLink, Router } from '@angular/router'; // <-- AJOUT DE ROUTER
+import { FormsModule } from '@angular/forms';
+import { RouterLink, Router } from '@angular/router';
 import { ForumService } from '../services/forum.service';
-import { ExpertService } from '../services/expert.service'; // <-- AJOUT
-import { AuthService } from '../services/auth.service'; // <-- AJOUT
+import { ExpertService } from '../services/expert.service';
+import { AuthService } from '../services/auth.service';
 import { Categorie, Discussion } from '../models/forum.model';
 
 @Component({
@@ -21,6 +21,7 @@ export class CommunauteComponent implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
+  searchTerm: string = '';
   ongletActif: 'categories' | 'discussions' | 'expert' = 'categories';
 
   categories: Categorie[] = [];
@@ -33,7 +34,6 @@ export class CommunauteComponent implements OnInit {
   isExpertMode = false;
   contacts: any[] = [];
   contactSelectionne: any = null;
-
 
   utilisateurActuel: any = null;
   showLoginPrompt = false;
@@ -50,23 +50,22 @@ export class CommunauteComponent implements OnInit {
   }
 
   chargerDonnees() {
-    // 1. Chargement des Catégories
+    // Chargement des Catégories
     this.forumService.getCategories().subscribe({
       next: (data) => { this.categories = data; this.cdr.detectChanges(); },
       error: (err) => console.error('Erreur catégories', err)
     });
 
-    // 2. Chargement des Discussions
+    // Chargement des Discussions
     this.forumService.getDernieresDiscussions().subscribe({
       next: (data) => { this.discussions = data; this.cdr.detectChanges(); },
       error: (err) => console.error('Erreur discussions', err)
     });
 
-    // 3. NOUVEAU : Chargement des Experts depuis Spring Boot
+    // Chargement des Experts depuis Spring Boot
     this.expertService.getExperts().subscribe({
       next: (data) => {
         this.experts = data;
-        // On sélectionne le premier expert par défaut s'il y en a un
         if (this.experts.length > 0) {
           this.selectedExpert = this.experts[0];
           this.chargerConversationExpert();
@@ -89,14 +88,13 @@ export class CommunauteComponent implements OnInit {
     this.ongletActif = onglet;
     if (onglet === 'expert') {
       this.utilisateurActuel = this.authService.currentUserValue;
-      this.chargerListeContacts(); // On charge la bonne liste selon le rôle !
+      this.chargerListeContacts();
     }
     this.cdr.detectChanges();
   }
 
   chargerListeContacts() {
     if (this.utilisateurActuel && this.utilisateurActuel.role === 'EXPERT') {
-      // MODE EXPERT : On charge ses clients
       this.isExpertMode = true;
       this.expertService.getClientsPourExpert(this.utilisateurActuel.id).subscribe({
         next: (data) => {
@@ -108,7 +106,6 @@ export class CommunauteComponent implements OnInit {
         }
       });
     } else {
-      // MODE CLIENT (ou non connecté) : On charge les experts
       this.isExpertMode = false;
       this.expertService.getExperts().subscribe({
         next: (data) => {
@@ -126,12 +123,6 @@ export class CommunauteComponent implements OnInit {
     this.contactSelectionne = contact;
     this.chargerConversationExpert();
   }
-  // --- LOGIQUE DE MESSAGERIE EXPERT ---
-
-  selectExpert(expert: any) {
-    this.selectedExpert = expert;
-    this.chargerConversationExpert();
-  }
 
   chargerConversationExpert() {
     if (!this.utilisateurActuel || !this.contactSelectionne) {
@@ -139,19 +130,14 @@ export class CommunauteComponent implements OnInit {
       return;
     }
 
-    console.log("--> DÉMARRAGE DU CHAT <--");
-    console.log("1. Mon ID (Moi) :", this.utilisateurActuel.id);
-    console.log("2. ID du Contact (Lui) :", this.contactSelectionne.id);
-
     this.expertService.getConversation(this.utilisateurActuel.id, this.contactSelectionne.id)
       .subscribe({
         next: (data) => {
-          console.log("3. Succès ! Messages reçus :", data);
           this.messagesExpert = data;
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error("3. Aïe ! Erreur serveur :", err);
+          console.error("Aïe ! Erreur serveur :", err);
         }
       });
   }
@@ -173,7 +159,37 @@ export class CommunauteComponent implements OnInit {
     });
   }
 
-  // Gestion de la modale de connexion
   fermerLoginPrompt() { this.showLoginPrompt = false; }
-  allerVersConnexion() { this.router.navigate(['/auth']); }
+
+  // Correction de la promesse ignorée du linter
+  allerVersConnexion() { this.router.navigate(['/auth']).then(); }
+
+  // --- FILTRES CORRIGÉS ---
+  get filteredCategories() {
+    if (!this.searchTerm.trim()) return this.categories; // Corrigé : categories au lieu de categoriesForum
+    const term = this.searchTerm.toLowerCase();
+    return this.categories.filter((cat: any) =>
+      cat.nom.toLowerCase().includes(term) ||
+      cat.description.toLowerCase().includes(term)
+    );
+  }
+
+  get filteredDiscussions() {
+    if (!this.searchTerm.trim()) return this.discussions;
+    const term = this.searchTerm.toLowerCase();
+    return this.discussions.filter((disc: any) =>
+      disc.titre.toLowerCase().includes(term) ||
+      disc.nomAuteur.toLowerCase().includes(term) // Corrigé : Utilise nomAuteur au lieu de auteur
+    );
+  }
+
+  get filteredContacts() {
+    if (!this.searchTerm.trim()) return this.contacts;
+    const term = this.searchTerm.toLowerCase();
+    return this.contacts.filter((contact: any) =>
+      contact.nom.toLowerCase().includes(term) ||
+      contact.prenom.toLowerCase().includes(term) ||
+      (contact.specialite && contact.specialite.toLowerCase().includes(term))
+    );
+  }
 }

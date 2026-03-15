@@ -13,6 +13,7 @@ import {AdminDashboardComponent} from './admin-dashboard.component/admin-dashboa
 import {CategorieDetailComponent} from './categorie-detail.component/categorie-detail.component';
 import {DiscussionDetailComponent} from './discussion-detail.component/discussion-detail.component';
 import {AuthComponent} from './auth.component/auth.component';
+import {LeconComponent} from './lecon.component/lecon.component';
 
 
 
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'communaute/categorie/:id', component: CategorieDetailComponent },
   { path: 'communaute/discussion/:id', component: DiscussionDetailComponent },
   { path: 'auth', component: AuthComponent },
+  { path: 'lecon/:type/:id', component: LeconComponent },
   { path: '**', redirectTo: '' },
 ];
 

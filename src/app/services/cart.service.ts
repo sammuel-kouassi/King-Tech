@@ -1,6 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
 
-// On définit la forme d'un produit dans le panier
 export interface CartItem {
   id: number;
   name: string;
@@ -16,7 +15,7 @@ export class CartService {
   // L'état d'ouverture du panneau
   isCartOpen = signal(false);
 
-  // La liste des produits (vide par défaut)
+  // La liste des produits
   items = signal<CartItem[]>([]);
 
   // "computed" permet de calculer automatiquement le nombre d'articles et le total
@@ -29,23 +28,35 @@ export class CartService {
 
   // Ajouter au panier
   addToCart(product: any, quantity: number = 1) {
+
+    // --- LA NORMALISATION EST ICI ---
+    // On s'assure de récupérer les bonnes données, que le produit vienne
+    // de la page d'accueil (anglais) ou de la page détail (français du backend)
+    const normalizedId = product.id;
+    const normalizedName = product.name || product.nom || 'Produit Inconnu';
+    const normalizedPrice = product.price || product.prix || 0;
+
+    // On gère toutes les formes d'images (image simple, imagePrincipale, ou tableau d'images)
+    const normalizedImage = product.image || product.imagePrincipale ||
+      (product.images && product.images.length > 0 ? product.images[0] : 'assets/images/placeholder.jpg');
+
     this.items.update(currentItems => {
-      const existingItem = currentItems.find(item => item.id === product.id);
+      const existingItem = currentItems.find(item => item.id === normalizedId);
 
       // Si le produit y est déjà, on augmente la quantité
       if (existingItem) {
         return currentItems.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+          item.id === normalizedId ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
 
-      // Sinon, on l'ajoute à la liste
+      // Sinon, on l'ajoute à la liste avec nos données nettoyées et unifiées
       return [...currentItems, {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity
+        id: normalizedId,
+        name: normalizedName,
+        price: normalizedPrice,
+        image: normalizedImage,
+        quantity: quantity
       }];
     });
 
@@ -64,7 +75,7 @@ export class CartService {
     }));
   }
 
-  // Supprimer un article (la poubelle)
+  // Supprimer un article
   removeItem(id: number) {
     this.items.update(currentItems => currentItems.filter(item => item.id !== id));
   }

@@ -1,73 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormationService } from '../services/formation.service';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-formation',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './formation.component.html',
-  styleUrls: ['./formation.component.css'] // ou .scss
+  styleUrls: ['./formation.component.css']
 })
-export class FormationComponent {
+export class FormationComponent implements OnInit {
 
-  // Onglets principaux
+  private formationService = inject(FormationService);
+  private cdr = inject(ChangeDetectorRef);
+
+  // --- ONGLETS ET FILTRES ---
   mainTabs = ['Cours', 'Tutoriels Rapides', 'Parcours'];
   activeMainTab = 'Cours';
 
-  // Filtres par catégorie
   categories = ['Tous', 'Arduino', 'Raspberry Pi', 'Robotique', 'IoT', 'Électronique'];
   activeCategory = 'Tous';
 
-  // Base de données des cours
-  courses = [
-    {
-      id: 1,
-      title: 'Arduino pour Débutants',
-      description: 'Apprenez les bases de la programmation Arduino : LED, capteurs, moteurs et plus encore.',
-      level: 'Débutant',
-      levelClass: 'beginner', // Pour appliquer le style vert clair
-      rating: 4.8,
-      tags: ['C++', 'Électronique', 'IoT'],
-      duration: '8h',
-      lessons: 24,
-      students: '1,240',
-      icon: '🔧',
-      bgColor: '#ecfdf5', // Vert très clair
-      category: 'Arduino'
-    },
-    {
-      id: 2,
-      title: 'Raspberry Pi – Système Embarqué',
-      description: 'Configurez et maîtrisez votre Raspberry Pi pour des projets embarqués professionnels.',
-      level: 'Intermédiaire',
-      levelClass: 'intermediate', // Pour appliquer le style orange
-      rating: 4.7,
-      tags: ['Linux', 'Python', 'GPIO'],
-      duration: '12h',
-      lessons: 36,
-      students: '890',
-      icon: '🍓',
-      bgColor: '#fdf2f8', // Rose très clair
-      category: 'Raspberry Pi'
-    },
-    {
-      id: 3,
-      title: 'Robotique : du Concept au Prototype',
-      description: 'Concevez, assemblez et programmez votre premier robot autonome de A à Z.',
-      level: 'Intermédiaire',
-      levelClass: 'intermediate',
-      rating: 4.9,
-      tags: ['Mécanique', 'Capteurs', 'PID'],
-      duration: '15h',
-      lessons: 42,
-      students: '650',
-      icon: '🤖',
-      bgColor: '#eff6ff', // Bleu très clair
-      category: 'Robotique'
-    }
-  ];
+  // --- VARIABLES DE STATISTIQUES ---
+  totalCours: number = 0;
+  totalLecons: number = 0;
+  totalEtudiants: number = 0;
 
+  // --- DONNÉES ---
+  courses: any[] = [];
 
-  // Données pour les Tutoriels Rapides
   tutorials = [
     { id: 1, title: 'LED clignotante avec Arduino Uno', level: 'Débutant', levelClass: 'beginner', duration: '15 min', views: '12,400' },
     { id: 2, title: 'Connecter un capteur de température DHT22', level: 'Débutant', levelClass: 'beginner', duration: '20 min', views: '8,900' },
@@ -75,7 +37,6 @@ export class FormationComponent {
     { id: 4, title: 'Créer un serveur web avec ESP32', level: 'Intermédiaire', levelClass: 'intermediate', duration: '45 min', views: '9,800' }
   ];
 
-  // Données pour les Parcours
   paths = [
     {
       id: 1,
@@ -95,7 +56,43 @@ export class FormationComponent {
     }
   ];
 
-  // Actions
+  ngOnInit() {
+    this.formationService.getCours().subscribe({
+      next: (data) => {
+        // Transformation des données reçues du backend
+        this.courses = data.map(c => ({
+          id: c.id,
+          title: c.titre,
+          description: c.description,
+          level: c.niveau,
+          levelClass: c.niveauClass,
+          rating: c.rating,
+          tags: c.tags ? c.tags.split(',') : [],
+          duration: c.duree,
+          lessons: c.lecons,
+          students: c.etudiants,
+          icon: c.icone,
+          bgColor: c.bgColor,
+          category: c.categorie
+        }));
+
+        this.totalCours = this.courses.length;
+
+        this.totalLecons = this.courses.reduce((somme, cours) => somme + (cours.lessons || 0), 0);
+
+        this.totalEtudiants = this.courses.reduce((somme, cours) => {
+          const nombrePropre = cours.students ? cours.students.replace(/,/g, '') : '0';
+          return somme + parseInt(nombrePropre, 10);
+        }, 0);
+
+        // Actualisation de la vue
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error("Erreur chargement des cours", err)
+    });
+  }
+
+  // --- ACTIONS ---
   setMainTab(tab: string) {
     this.activeMainTab = tab;
   }
@@ -104,7 +101,6 @@ export class FormationComponent {
     this.activeCategory = cat;
   }
 
-  // Filtrage dynamique
   get filteredCourses() {
     if (this.activeCategory === 'Tous') {
       return this.courses;

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { CartService } from '../cart.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -15,10 +15,10 @@ export class CartComponent {
   private router = inject(Router);
 
   goToCheckout() {
-    // 1. On ferme d'abord le panier (le drawer)
+    // On ferme d'abord le panier (le drawer).
     this.cartService.toggleCart();
 
-    // 2. On redirige vers la page checkout
+    // On redirige vers la page checkout
     this.router.navigate(['/checkout']);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CartService } from '../cart.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-success',
@@ -22,7 +22,7 @@ export class SuccessComponent implements OnInit {
   currentDate: any = new Date();
 
   ngOnInit() {
-    // 1. On intercepte les vraies données envoyées par Spring Boot via le routeur
+    // On intercepte les vraies données envoyées par Spring Boot via le routeur
     const commandeInfo = history.state.commandeInfo;
 
     if (commandeInfo) {
@@ -35,11 +35,11 @@ export class SuccessComponent implements OnInit {
       this.orderNumber = 'KT-XXXX';
     }
 
-    // 2. On "photographie" le panier actuel
+    // On "photographie" le panier actuel
     this.orderItems = [...this.cartService.items()];
     this.orderTotal = this.cartService.cartTotal();
 
-    // 3. On vide le panier de la barre de navigation
+    // On vide le panier de la barre de navigation
     this.cartService.clearCart();
   }
 

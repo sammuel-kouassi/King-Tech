@@ -110,7 +110,7 @@ export class CategorieDetailComponent implements OnInit {
       error: (err: any) => {
         console.error('Erreur création côté API', err);
         // Cette alerte va t'afficher l'erreur si Spring Boot refuse la requête !
-        alert("Oups ! Impossible de publier. Vérifie que ton backend Spring Boot est bien lancé et regarde sa console.");
+        alert("Oups ! Impossible de publier.");
       }
     });
   }

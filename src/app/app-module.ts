@@ -25,8 +25,9 @@ import {provideHttpClient} from '@angular/common/http';
 import { AdminDashboardComponent } from './admin-dashboard.component/admin-dashboard.component';
 import { CategorieDetailComponent } from './categorie-detail.component/categorie-detail.component';
 import { DiscussionDetailComponent } from './discussion-detail.component/discussion-detail.component';
-import { LoginComponent } from './login.component/login.component';
 import { AuthComponent } from './auth.component/auth.component';
+import {FormsModule} from '@angular/forms';
+import { LeconComponent } from './lecon.component/lecon.component';
 
 @NgModule({
   declarations: [
@@ -37,17 +38,16 @@ import { AuthComponent } from './auth.component/auth.component';
     PopularProductsComponent,
     FooterComponent,
     HomeComponent,
-    FormationComponent,
     AProposComponent,
     RetoursComponent,
     Partenaire,
-    AdminDashboardComponent,
-    LoginComponent
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
     CommonModule,
     AppRoutingModule,
+    FormationComponent,
     NewsletterComponent,
     CategoriesComponent,
     BoutiqueComponent,
@@ -58,7 +58,9 @@ import { AuthComponent } from './auth.component/auth.component';
     CartComponent,
     CheckoutComponent,
     SuccessComponent,
-    NgOptimizedImage
+    NgOptimizedImage,
+    FormsModule,
+    LeconComponent,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

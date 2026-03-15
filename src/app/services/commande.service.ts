@@ -17,7 +17,6 @@ export class CommandeService {
     return this.http.post<CommandeResponse>(this.apiUrl, commande);
   }
 
-  // À ajouter sous ta méthode creerCommande() existante
   getCommandes(): Observable<CommandeResponse[]> {
     return this.http.get<CommandeResponse[]>(this.apiUrl);
   }

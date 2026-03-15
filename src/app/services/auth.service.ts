@@ -15,7 +15,7 @@ export class AuthService {
   );
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  // Obtenir l'utilisateur actuel (utile pour les futurs posts du forum)
+  // Obtenir l'utilisateur actuel
   get currentUserValue() {
     return this.currentUserSubject.value;
   }

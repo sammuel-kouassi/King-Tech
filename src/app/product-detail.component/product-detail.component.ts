@@ -2,7 +2,7 @@
 import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { CartService } from '../cart.service';
+import { CartService } from '../services/cart.service';
 import { ProduitService } from '../services/produit.service';
 import { ProduitDetail, ProduitResume } from '../models/produit.model';
 
@@ -67,13 +67,11 @@ export class ProductDetailComponent implements OnInit {
           .filter(p => p.categorie === categorie && p.id !== currentProductId)
           .slice(0, 4);
 
-        // 4. Actualise la page pour afficher les produits similaires en bas
+        // Actualise la page pour afficher les produits similaires en bas
         this.cdr.detectChanges();
       }
     });
   }
-
-  // ... (Le reste de tes méthodes changeImage, increaseQuantity, etc. reste identique)
 
   changeImage(img: string) {
     this.activeImage = img;

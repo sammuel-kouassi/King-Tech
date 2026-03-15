@@ -1,0 +1,48 @@
+<div class="lecon-layout">
+  <nav class="lecon-nav">
+    <a routerLink="/formation" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Retour aux formations
+    </a>
+    <h2>{{ titrePage }}</h2>
+  </nav>
+
+  <div class="lecon-container">
+    <main class="video-section">
+      <div class="video-player">
+        <div class="play-overlay">
+          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+      </div>
+
+      <div class="video-info">
+        <h3>Chapitre 1 : Les bases ({{ typeFormation | uppercase }})</h3>
+        <p>Dans cette leçon, nous allons aborder les concepts fondamentaux pour bien démarrer. Assurez-vous d'avoir votre matériel prêt.</p>
+      </div>
+    </main>
+
+    <aside class="playlist-section">
+      <div class="playlist-header">
+        <h3>Contenu du {{ typeFormation }}</h3>
+      </div>
+
+      <ul class="playlist-items">
+        <li class="active">
+          <div class="icon-play"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+          <span>1. Les bases</span>
+          <span class="time">10:00</span>
+        </li>
+        <li>
+          <div class="icon-play"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+          <span>2. Configuration du matériel</span>
+          <span class="time">15:30</span>
+        </li>
+        <li>
+          <div class="icon-play"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+          <span>3. Premier programme (Terminé)</span>
+          <span class="time">08:45</span>
+        </li>
+      </ul>
+    </aside>
+  </div>
+</div>

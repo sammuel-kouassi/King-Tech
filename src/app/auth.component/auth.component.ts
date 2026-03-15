@@ -17,20 +17,20 @@ declare var google: any;
 export class AuthComponent implements AfterViewInit {
   ngAfterViewInit() {
     google.accounts.id.initialize({
-      client_id: '741902731114-9v8hb1h0laa6rpecl44cmhrm16a6g2in.apps.googleusercontent.com', // <--- REMPLACE PAR TON VRAI CODE !
+      client_id: '741902731114-9v8hb1h0laa6rpecl44cmhrm16a6g2in.apps.googleusercontent.com',
       callback: (response: any) => this.gererConnexionGoogle(response)
     });
 
     google.accounts.id.renderButton(
       document.getElementById("google-btn"),
-      { theme: "outline", size: "large", text: "continue_with" } // Style officiel Google
+      { theme: "outline", size: "large", text: "continue_with" }
     );
   }
 
   gererConnexionGoogle(response: any) {
     const tokenGoogle = response.credential;
 
-    // On envoie le token à Spring Boot
+    // envoie du token à Spring Boot
     this.authService.loginWithGoogle(tokenGoogle).subscribe({
       next: (utilisateur) => {
         this.router.navigate(['/communaute']);
@@ -46,7 +46,7 @@ export class AuthComponent implements AfterViewInit {
   private router = inject(Router);
 
   isRegisterMode = false;
-  showSuccessModal = false; // NOUVEAU : Contrôle la modale de succès
+  showSuccessModal = false;
 
 
   nom = '';
@@ -61,10 +61,11 @@ export class AuthComponent implements AfterViewInit {
   }
 
   soumettre() {
-    this.erreurMessage = ''; // On vide l'ancienne erreur
+    this.erreurMessage = '';
 
     if (this.isRegisterMode) {
-      // --- MODE INSCRIPTION ---
+
+      // INSCRIPTION
       const nouvelUtilisateur = {
         nom: this.nom, prenom: this.prenom,
         email: this.email, motDePasse: this.motDePasse
@@ -75,7 +76,6 @@ export class AuthComponent implements AfterViewInit {
           this.showSuccessModal = true;
         },
         error: (err) => {
-          // Si Spring Boot renvoie une erreur 400 (Bad Request), c'est que l'email existe !
           if (err.status === 400) {
             this.erreurMessage = "Cet email est déjà utilisé par un autre compte.";
           } else {
@@ -85,7 +85,7 @@ export class AuthComponent implements AfterViewInit {
       });
 
     } else {
-      // --- MODE CONNEXION ---
+      // CONNEXION
       this.authService.login(this.email, this.motDePasse).subscribe({
         next: () => {
           this.router.navigate(['/communaute']);

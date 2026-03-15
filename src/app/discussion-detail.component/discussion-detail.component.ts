@@ -57,7 +57,6 @@ export class DiscussionDetailComponent implements OnInit {
     const utilisateurConnecte = this.authService.currentUserValue;
 
     if (!utilisateurConnecte) {
-      // On bloque l'envoi et on affiche la belle modale
       this.showLoginPrompt = true;
       return;
     }
@@ -76,7 +75,6 @@ export class DiscussionDetailComponent implements OnInit {
     });
   }
 
-  // NOUVELLES MÉTHODES POUR LA MODALE
   fermerLoginPrompt() {
     this.showLoginPrompt = false;
   }

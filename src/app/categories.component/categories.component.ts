@@ -54,10 +54,10 @@ export class CategoriesComponent implements OnInit {
     this.produitService.getProduits().subscribe({
       next: (data: ProduitResume[]) => {
 
-        // 2. On s'assure que les compteurs sont à 0 avant de recompter
+        // On s'assure que les compteurs sont à 0 avant de recompter
         this.categoriesList.forEach(cat => cat.count = 0);
 
-        // 3. Calcul dynamique : on incrémente le compteur si la catégorie correspond
+        // Calcul dynamique : on incrémente le compteur si la catégorie correspond
         data.forEach(produit => {
           const catIndex = this.categoriesList.findIndex(c => c.name === produit.categorie);
           if (catIndex !== -1) {
@@ -65,7 +65,7 @@ export class CategoriesComponent implements OnInit {
           }
         });
 
-        // 4. On rafraîchit l'affichage
+        // On rafraîchit l'affichage
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Erreur chargement des catégories:', err)

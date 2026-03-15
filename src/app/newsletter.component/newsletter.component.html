@@ -4,10 +4,26 @@
     <h2>Restez informé</h2>
     <p>Inscrivez-vous pour recevoir nos offres exclusives et les dernières nouveautés.</p>
 
-    <form class="newsletter-form" (submit)="onSubmit($event)">
-      <input type="email" placeholder="Votre email" required aria-label="Adresse email">
-      <button type="submit">S'inscrire</button>
+    <form class="newsletter-form" (ngSubmit)="sInscrireNewsletter()">
+      <input
+        type="email"
+        name="email"
+        placeholder="Votre email"
+        required
+        aria-label="Adresse email"
+        [(ngModel)]="emailNewsletter"
+        [disabled]="isLoadingNewsletter">
+
+      <button type="submit" [disabled]="isLoadingNewsletter">
+        {{ isLoadingNewsletter ? 'Patientez...' : 'S\'inscrire' }}
+      </button>
     </form>
+
+    @if (messageNewsletter) {
+      <div class="newsletter-message" [class.error]="isErrorNewsletter" [class.success]="!isErrorNewsletter">
+        {{ messageNewsletter }}
+      </div>
+    }
 
   </div>
 </section>
