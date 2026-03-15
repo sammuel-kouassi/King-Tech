@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'https://king-tech-api.onrender.com/api/auth';
 
   // Le BehaviorSubject permet de savoir "en direct" dans toute l'appli si on est connecté
   private currentUserSubject = new BehaviorSubject<any>(

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class NewsletterService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/newsletter/subscribe';
+  private apiUrl = 'https://king-tech-api.onrender.com/api/newsletter/subscribe';
 
   subscribe(email: string): Observable<any> {
     return this.http.post<any>(this.apiUrl, { email: email });

@@ -8,7 +8,7 @@ import { Categorie, Discussion } from '../models/forum.model';
 })
 export class ForumService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/forum';
+  private apiUrl = 'https://king-tech-api.onrender.com/api/forum';
 
   getCategories(): Observable<Categorie[]> {
     return this.http.get<Categorie[]>(`${this.apiUrl}/categories`);

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ExpertService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/experts';
+  private apiUrl = 'https://king-tech-api.onrender.com/api/experts';
 
   //Récupérer la liste des experts
   getExperts(): Observable<any[]> {

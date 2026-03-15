@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FormationService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/formation';
+  private apiUrl = 'https://king-tech-api.onrender.com/api/formation';
 
   getCours(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/cours`);

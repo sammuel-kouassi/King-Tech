@@ -10,7 +10,7 @@ export class ProduitService {
   private http = inject(HttpClient);
 
   // L'URL de ton backend Spring Boot
-  private apiUrl = 'http://localhost:8080/api/produits';
+  private apiUrl = 'https://king-tech-api.onrender.com/api/produits';
 
   getProduits(): Observable<ProduitResume[]> {
     return this.http.get<ProduitResume[]>(this.apiUrl);

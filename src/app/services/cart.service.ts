@@ -29,9 +29,7 @@ export class CartService {
   // Ajouter au panier
   addToCart(product: any, quantity: number = 1) {
 
-    // --- LA NORMALISATION EST ICI ---
-    // On s'assure de récupérer les bonnes données, que le produit vienne
-    // de la page d'accueil (anglais) ou de la page détail (français du backend)
+
     const normalizedId = product.id;
     const normalizedName = product.name || product.nom || 'Produit Inconnu';
     const normalizedPrice = product.price || product.prix || 0;
@@ -68,7 +66,7 @@ export class CartService {
   updateQuantity(id: number, delta: number) {
     this.items.update(currentItems => currentItems.map(item => {
       if (item.id === id) {
-        const newQuantity = Math.max(1, item.quantity + delta); // Empêche de descendre sous 1
+        const newQuantity = Math.max(1, item.quantity + delta);
         return { ...item, quantity: newQuantity };
       }
       return item;

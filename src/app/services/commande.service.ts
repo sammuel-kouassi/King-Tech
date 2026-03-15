@@ -10,7 +10,7 @@ export class CommandeService {
   private http = inject(HttpClient);
 
   // L'URL de ton nouveau Controller Spring Boot
-  private apiUrl = 'http://localhost:8080/api/commandes';
+  private apiUrl = 'https://king-tech-api.onrender.com/api/commandes';
 
   // Méthode pour envoyer la commande
   creerCommande(commande: CommandeRequest): Observable<CommandeResponse> {
