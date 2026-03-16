@@ -32,9 +32,10 @@ export class CommunauteComponent implements OnInit {
   showLoginPrompt = false;
   showCreationModal = false;
 
+  // Modèle mis à jour pour les sujets prédéfinis
   nouveauSujet = {
     titre: '',
-    categorieId: '',
+    typeSujet: '',
     message: ''
   };
 
@@ -81,17 +82,17 @@ export class CommunauteComponent implements OnInit {
 
   fermerModal() {
     this.showCreationModal = false;
-    this.nouveauSujet = { titre: '', categorieId: '', message: '' };
+    this.nouveauSujet = { titre: '', typeSujet: '', message: '' };
     this.cdr.detectChanges();
   }
 
   publierSujet() {
-    if (!this.nouveauSujet.titre || !this.nouveauSujet.categorieId || !this.nouveauSujet.message) {
+    if (!this.nouveauSujet.titre || !this.nouveauSujet.typeSujet || !this.nouveauSujet.message) {
       alert("Veuillez remplir tous les champs !");
       return;
     }
-    // Simulation d'envoi
     console.log("Publication du sujet :", this.nouveauSujet);
+    // Ici l'appel vers ton backend : this.forumService.createPost(this.nouveauSujet).subscribe(...)
     this.fermerModal();
   }
 

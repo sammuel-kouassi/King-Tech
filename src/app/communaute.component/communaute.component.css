@@ -1,4 +1,4 @@
-/* --- Base & Animations --- */
+/* --- Base & Animations de départ --- */
 .communaute-page { background-color: #ffffff; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
 @keyframes fadeUpIn {
@@ -44,7 +44,15 @@
 .form-group { margin-bottom: 1.2rem; }
 .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; color: #475569; }
 .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; transition: 0.3s; }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #009B85; }
 
 .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem; }
 .btn-annuler { background: #f1f5f9; color: #64748b; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+/* Style spécifique pour le select */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
