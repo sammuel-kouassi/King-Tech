@@ -55,13 +55,24 @@ export class CommunauteComponent implements OnInit {
   }
 
   chargerDonnees() {
-    this.forumService.getCategories().subscribe(data => { this.categories = data; this.cdr.detectChanges(); });
-    this.forumService.getDernieresDiscussions().subscribe(data => { this.discussions = data; this.cdr.detectChanges(); });
-    this.expertService.getExperts().subscribe(data => { this.experts = data; this.cdr.detectChanges(); });
-    this.forumService.getStats().subscribe(data => { this.stats = data; this.cdr.detectChanges(); });
+    this.forumService.getCategories().subscribe(data => {
+      this.categories = data;
+      this.cdr.detectChanges();
+    });
+    this.forumService.getDernieresDiscussions().subscribe(data => {
+      this.discussions = data;
+      this.cdr.detectChanges();
+    });
+    this.expertService.getExperts().subscribe(data => {
+      this.experts = data;
+      this.cdr.detectChanges();
+    });
+    this.forumService.getStats().subscribe(data => {
+      this.stats = data;
+      this.cdr.detectChanges();
+    });
   }
 
-  // LOGIQUE DU BOUTON CRÉATION
   creerDiscussion() {
     if (!this.utilisateurActuel) {
       this.showLoginPrompt = true;
@@ -73,7 +84,7 @@ export class CommunauteComponent implements OnInit {
 
   fermerModal() {
     this.showCreationModal = false;
-    this.nouveauSujet = { titre: '', categorieId: '', message: '' }; // Reset du formulaire
+    this.nouveauSujet = { titre: '', categorieId: '', message: '' };
     this.cdr.detectChanges();
   }
 
@@ -82,12 +93,9 @@ export class CommunauteComponent implements OnInit {
       alert("Veuillez remplir tous les champs !");
       return;
     }
-
     console.log("Envoi du nouveau sujet :", this.nouveauSujet);
-    // Ici vous appellerez votre service : this.forumService.createPost(this.nouveauSujet).subscribe(...)
-
+    // Appel service ici : this.forumService.createPost(this.nouveauSujet).subscribe(...)
     this.fermerModal();
-    // Optionnel : Message de succès ou rechargement des discussions
   }
 
   changerOnglet(onglet: 'categories' | 'discussions' | 'expert') {
@@ -96,7 +104,6 @@ export class CommunauteComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // --- LOGIQUE CHAT EXPERT ---
   chargerListeContacts() {
     const service = (this.utilisateurActuel?.role === 'EXPERT') ?
       this.expertService.getClientsPourExpert(this.utilisateurActuel.id) :
@@ -130,19 +137,16 @@ export class CommunauteComponent implements OnInit {
   fermerLoginPrompt() { this.showLoginPrompt = false; }
   allerVersConnexion() { this.router.navigate(['/auth']).then(); }
 
-  // --- GETTERS POUR FILTRES ---
   get filteredCategories() {
     const term = this.searchTerm.toLowerCase();
-    return this.categories.filter(c => c.nom.toLowerCase().includes(term) || c.description.toLowerCase().includes(term));
+    return this.categories.filter(c => c.nom.toLowerCase().includes(term));
   }
-
   get filteredDiscussions() {
     const term = this.searchTerm.toLowerCase();
-    return this.discussions.filter(d => d.titre.toLowerCase().includes(term) || d.nomAuteur.toLowerCase().includes(term));
+    return this.discussions.filter(d => d.titre.toLowerCase().includes(term));
   }
-
   get filteredContacts() {
     const term = this.searchTerm.toLowerCase();
-    return this.contacts.filter(c => c.nom.toLowerCase().includes(term) || (c.specialite && c.specialite.toLowerCase().includes(term)));
+    return this.contacts.filter(c => c.nom.toLowerCase().includes(term));
   }
 }

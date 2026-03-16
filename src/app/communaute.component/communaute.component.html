@@ -2,13 +2,13 @@
 
   <header class="communaute-header">
     <div class="header-container">
-      <h1>
+      <h1 class="animate-1">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="header-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         Communauté KING-TECH
       </h1>
-      <p class="subtitle">Échangez avec des passionnés d'électronique, partagez vos projets et obtenez de l'aide de notre communauté et de nos experts.</p>
+      <p class="subtitle animate-2">Échangez avec des passionnés d'électronique, partagez vos projets et obtenez de l'aide de notre communauté et de nos experts.</p>
 
-      <div class="header-stats">
+      <div class="header-stats animate-3">
         <span class="stat-item"><strong>{{ stats.membres }}</strong> membres</span>
         <span class="stat-item"><strong>{{ stats.messages }}</strong> messages</span>
         <span class="stat-item"><strong>{{ stats.experts }}</strong> experts en ligne</span>
@@ -18,102 +18,61 @@
 
   <main class="communaute-main">
 
-    <div class="search-actions" style="display: flex; gap: 1rem; margin-bottom: 2rem; align-items: center;">
-      <div class="search-bar" style="flex: 1; margin-bottom: 0;">
+    <div class="search-actions animate-4">
+      <div class="search-bar">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" placeholder="Rechercher dans le forum..." [(ngModel)]="searchTerm">
       </div>
-
       <button class="btn-publier" (click)="creerDiscussion()">
         + Nouvelle discussion
       </button>
     </div>
 
-    <div class="tabs-container">
+    <div class="tabs-container animate-5">
       <button class="tab-btn" [class.active]="ongletActif === 'categories'" (click)="changerOnglet('categories')">Catégories</button>
       <button class="tab-btn" [class.active]="ongletActif === 'discussions'" (click)="changerOnglet('discussions')">Dernières Discussions</button>
       <button class="tab-btn" [class.active]="ongletActif === 'expert'" (click)="changerOnglet('expert')">Parler à un Expert</button>
     </div>
 
-    @if (ongletActif === 'categories') {
-      <div class="forum-list">
-        @for (cat of filteredCategories; track cat.id) {
-          <a [routerLink]="['/communaute/categorie', cat.id]" class="forum-card">
-            <div class="icon-wrapper"><span class="emoji-icon">{{ cat.icone || '🔧' }}</span></div>
-            <div class="forum-info">
-              <h3>{{ cat.nom }}</h3>
-              <span class="forum-stats">{{ cat.nombreSujets }} sujets · {{ cat.nombreMessages }} messages</span>
-            </div>
-            <div class="chevron">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-          </a>
-        }
-      </div>
-    }
-
-    @if (ongletActif === 'discussions') {
-      <div class="discussions-list">
-        @for (disc of filteredDiscussions; track disc.id) {
-          <div class="discussion-card">
-            <div class="avatar-circle">{{ disc.initialesAuteur }}</div>
-            <div class="disc-content">
-              <div class="disc-header">
-                @if (disc.epingle) { <span class="badge-pinned">ÉPINGLÉ</span> }
-                <h3>{{ disc.titre }}</h3>
+    <div class="animate-6">
+      @if (ongletActif === 'categories') {
+        <div class="forum-list">
+          @for (cat of filteredCategories; track cat.id) {
+            <a [routerLink]="['/communaute/categorie', cat.id]" class="forum-card">
+              <div class="icon-wrapper"><span class="emoji-icon">{{ cat.icone || '🔧' }}</span></div>
+              <div class="forum-info">
+                <h3>{{ cat.nom }}</h3>
+                <span class="forum-stats">{{ cat.nombreSujets }} sujets · {{ cat.nombreMessages }} messages</span>
               </div>
-              <div class="disc-meta">
-                <span class="author">{{ disc.nomAuteur }}</span>
-                <span class="time">{{ disc.dateCreation | date:'shortTime' }}</span>
+              <div class="chevron">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </div>
-            </div>
-          </div>
-        }
-      </div>
-    }
+            </a>
+          }
+        </div>
+      }
 
-    @if (ongletActif === 'expert') {
-      <div class="expert-layout">
-        <aside class="expert-sidebar">
-          <h3 class="sidebar-title">Contacts</h3>
-          <div class="experts-list">
-            @for (contact of filteredContacts; track contact.id) {
-              <div class="expert-card" [class.active]="contactSelectionne?.id === contact.id" (click)="selectContact(contact)">
-                <div class="expert-avatar">{{ contact.prenom.charAt(0) }}{{ contact.nom.charAt(0) }}</div>
-                <div class="expert-info">
-                  <h4>{{ contact.prenom }} {{ contact.nom }}</h4>
-                  <p>{{ isExpertMode ? 'Client' : contact.specialite }}</p>
+      @if (ongletActif === 'discussions') {
+        <div class="discussions-list">
+          @for (disc of filteredDiscussions; track disc.id) {
+            <div class="discussion-card">
+              <div class="avatar-circle">{{ disc.initialesAuteur }}</div>
+              <div class="disc-content">
+                <div class="disc-header">
+                  @if (disc.epingle) { <span class="badge-pinned">ÉPINGLÉ</span> }
+                  <h3>{{ disc.titre }}</h3>
+                </div>
+                <div class="disc-meta">
+                  <span class="author">{{ disc.nomAuteur }}</span>
+                  <span class="time">{{ disc.dateCreation | date:'shortTime' }}</span>
                 </div>
               </div>
-            }
-          </div>
-        </aside>
-
-        <section class="expert-chat">
-          @if (contactSelectionne) {
-            <div class="chat-header">
-              <h4>{{ contactSelectionne.prenom }} {{ contactSelectionne.nom }}</h4>
-            </div>
-            <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
-              <div class="messages-list">
-                @for (msg of messagesExpert; track msg.id) {
-                  <div class="message-wrapper" [class.sent-wrapper]="msg.expediteur.id === utilisateurActuel.id">
-                    <div class="message-bubble" [class.sent]="msg.expediteur.id === utilisateurActuel.id" [class.received]="msg.expediteur.id !== utilisateurActuel.id">
-                      <p>{{ msg.contenu }}</p>
-                      <span class="msg-time">{{ msg.dateEnvoi | date:'HH:mm' }}</span>
-                    </div>
-                  </div>
-                }
-              </div>
-            </div>
-            <div class="chat-input-area">
-              <textarea [(ngModel)]="nouveauMessageExpert" placeholder="Votre message..." (keyup.enter)="envoyerMessageExpert()"></textarea>
-              <button class="send-btn" (click)="envoyerMessageExpert()">Envoyer</button>
             </div>
           }
-        </section>
-      </div>
-    }
+        </div>
+      }
+    </div>
+
   </main>
 
   @if (showCreationModal) {
@@ -123,7 +82,6 @@
           <h2>Démarrer une discussion</h2>
           <button (click)="fermerModal()" class="close-btn">&times;</button>
         </div>
-
         <form (submit)="publierSujet()">
           <div class="form-group">
             <label>Titre</label>
@@ -131,15 +89,15 @@
           </div>
           <div class="form-group">
             <label>Catégorie</label>
-            <select name="cat" [(ngModel)]="nouveauSujet.categorieId">
-              <option value="" disabled>Choisir une catégorie</option>
+            <select name="catId" [(ngModel)]="nouveauSujet.categorieId" required>
+              <option value="" disabled selected>Choisir une catégorie</option>
               @for (cat of categories; track cat.id) {
                 <option [value]="cat.id">{{ cat.nom }}</option>
               }
             </select>
           </div>
           <div class="form-group">
-            <label>Votre question / message</label>
+            <label>Votre message</label>
             <textarea name="msg" [(ngModel)]="nouveauSujet.message" rows="5"></textarea>
           </div>
           <div class="form-actions">
@@ -147,19 +105,6 @@
             <button type="submit" class="btn-publier">Publier</button>
           </div>
         </form>
-      </div>
-    </div>
-  }
-
-  @if (showLoginPrompt) {
-    <div class="modal-overlay" (click)="fermerLoginPrompt()">
-      <div class="modal-content prompt-content" (click)="$event.stopPropagation()">
-        <h2>Connexion requise</h2>
-        <p>Vous devez être connecté pour participer au forum.</p>
-        <div class="prompt-actions">
-          <button class="btn-annuler" (click)="fermerLoginPrompt()">Plus tard</button>
-          <button class="btn-publier" (click)="allerVersConnexion()">Se connecter</button>
-        </div>
       </div>
     </div>
   }
