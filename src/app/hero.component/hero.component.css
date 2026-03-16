@@ -198,3 +198,13 @@
   0% { top: 6px; opacity: 1; }
   100% { top: 20px; opacity: 0; }
 }
+
+/* Adaptation pour les téléphones et petites tablettes */
+@media (max-width: 768px) {
+  /* Remplace la classe .titre-principal par la classe exacte de ton texte (ex: h1, .hero-title...) */
+  .titre-principal {
+    font-size: 2.5rem !important; /* Réduit drastiquement la taille de la police */
+    line-height: 1.2;
+    word-wrap: break-word; /* Force le texte à aller à la ligne s'il est trop long */
+  }
+}
