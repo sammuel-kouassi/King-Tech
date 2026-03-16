@@ -44,9 +44,7 @@
                 <h3>{{ cat.nom }}</h3>
                 <span class="forum-stats">{{ cat.nombreSujets }} sujets · {{ cat.nombreMessages }} messages</span>
               </div>
-              <div class="chevron">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </div>
+              <div class="chevron"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
             </a>
           }
         </div>
@@ -72,7 +70,6 @@
         </div>
       }
     </div>
-
   </main>
 
   @if (showCreationModal) {
@@ -82,11 +79,13 @@
           <h2>Démarrer une discussion</h2>
           <button (click)="fermerModal()" class="close-btn">&times;</button>
         </div>
+
         <form (submit)="publierSujet()">
           <div class="form-group">
             <label>Titre</label>
-            <input type="text" name="titre" [(ngModel)]="nouveauSujet.titre" placeholder="Titre explicite...">
+            <input type="text" name="titre" [(ngModel)]="nouveauSujet.titre" placeholder="Titre explicite..." required>
           </div>
+
           <div class="form-group">
             <label>Catégorie</label>
             <select name="catId" [(ngModel)]="nouveauSujet.categorieId" required>
@@ -96,15 +95,30 @@
               }
             </select>
           </div>
+
           <div class="form-group">
-            <label>Votre message</label>
-            <textarea name="msg" [(ngModel)]="nouveauSujet.message" rows="5"></textarea>
+            <label>Votre question / message</label>
+            <textarea name="msg" [(ngModel)]="nouveauSujet.message" rows="5" required></textarea>
           </div>
+
           <div class="form-actions">
             <button type="button" class="btn-annuler" (click)="fermerModal()">Annuler</button>
             <button type="submit" class="btn-publier">Publier</button>
           </div>
         </form>
+      </div>
+    </div>
+  }
+
+  @if (showLoginPrompt) {
+    <div class="modal-overlay" (click)="fermerLoginPrompt()">
+      <div class="modal-content prompt-content" (click)="$event.stopPropagation()">
+        <h2>Connexion requise</h2>
+        <p>Vous devez être connecté pour participer au forum.</p>
+        <div class="prompt-actions">
+          <button class="btn-annuler" (click)="fermerLoginPrompt()">Plus tard</button>
+          <button class="btn-publier" (click)="allerVersConnexion()">Se connecter</button>
+        </div>
       </div>
     </div>
   }

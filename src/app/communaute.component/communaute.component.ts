@@ -28,12 +28,10 @@ export class CommunauteComponent implements OnInit {
   discussions: Discussion[] = [];
   experts: any[] = [];
 
-  // États de l'utilisateur et des Modals
   utilisateurActuel: any = null;
   showLoginPrompt = false;
   showCreationModal = false;
 
-  // Modèle pour le formulaire de nouveau sujet
   nouveauSujet = {
     titre: '',
     categorieId: '',
@@ -42,7 +40,6 @@ export class CommunauteComponent implements OnInit {
 
   stats = { membres: 0, messages: 0, experts: 0 };
 
-  // Variables Chat Expert
   contacts: any[] = [];
   contactSelectionne: any = null;
   messagesExpert: any[] = [];
@@ -93,8 +90,8 @@ export class CommunauteComponent implements OnInit {
       alert("Veuillez remplir tous les champs !");
       return;
     }
-    console.log("Envoi du nouveau sujet :", this.nouveauSujet);
-    // Appel service ici : this.forumService.createPost(this.nouveauSujet).subscribe(...)
+    // Simulation d'envoi
+    console.log("Publication du sujet :", this.nouveauSujet);
     this.fermerModal();
   }
 
