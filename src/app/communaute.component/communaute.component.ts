@@ -26,26 +26,23 @@ export class CommunauteComponent implements OnInit {
 
   categories: Categorie[] = [];
   discussions: Discussion[] = [];
+
   experts: any[] = [];
-
-  utilisateurActuel: any = null;
-  showLoginPrompt = false;
-  showCreationModal = false;
-
-  // Modèle mis à jour pour les sujets prédéfinis
-  nouveauSujet = {
-    titre: '',
-    typeSujet: '',
-    message: ''
-  };
-
-  stats = { membres: 0, messages: 0, experts: 0 };
-
-  contacts: any[] = [];
-  contactSelectionne: any = null;
+  selectedExpert: any = null;
   messagesExpert: any[] = [];
   nouveauMessageExpert: string = '';
   isExpertMode = false;
+  contacts: any[] = [];
+  contactSelectionne: any = null;
+
+  utilisateurActuel: any = null;
+  showLoginPrompt = false;
+
+  stats = {
+    membres: 0,
+    messages: 0,
+    experts: 0
+  };
 
   ngOnInit() {
     this.utilisateurActuel = this.authService.currentUserValue;
@@ -53,65 +50,73 @@ export class CommunauteComponent implements OnInit {
   }
 
   chargerDonnees() {
-    this.forumService.getCategories().subscribe(data => {
-      this.categories = data;
-      this.cdr.detectChanges();
+    // Chargement des Catégories
+    this.forumService.getCategories().subscribe({
+      next: (data) => { this.categories = data; this.cdr.detectChanges(); },
+      error: (err) => console.error('Erreur catégories', err)
     });
-    this.forumService.getDernieresDiscussions().subscribe(data => {
-      this.discussions = data;
-      this.cdr.detectChanges();
-    });
-    this.expertService.getExperts().subscribe(data => {
-      this.experts = data;
-      this.cdr.detectChanges();
-    });
-    this.forumService.getStats().subscribe(data => {
-      this.stats = data;
-      this.cdr.detectChanges();
-    });
-  }
 
-  creerDiscussion() {
-    if (!this.utilisateurActuel) {
-      this.showLoginPrompt = true;
-    } else {
-      this.showCreationModal = true;
-    }
-    this.cdr.detectChanges();
-  }
+    // Chargement des Discussions
+    this.forumService.getDernieresDiscussions().subscribe({
+      next: (data) => { this.discussions = data; this.cdr.detectChanges(); },
+      error: (err) => console.error('Erreur discussions', err)
+    });
 
-  fermerModal() {
-    this.showCreationModal = false;
-    this.nouveauSujet = { titre: '', typeSujet: '', message: '' };
-    this.cdr.detectChanges();
-  }
+    // Chargement des Experts depuis Spring Boot
+    this.expertService.getExperts().subscribe({
+      next: (data) => {
+        this.experts = data;
+        if (this.experts.length > 0) {
+          this.selectedExpert = this.experts[0];
+          this.chargerConversationExpert();
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur experts', err)
+    });
 
-  publierSujet() {
-    if (!this.nouveauSujet.titre || !this.nouveauSujet.typeSujet || !this.nouveauSujet.message) {
-      alert("Veuillez remplir tous les champs !");
-      return;
-    }
-    console.log("Publication du sujet :", this.nouveauSujet);
-    // Ici l'appel vers ton backend : this.forumService.createPost(this.nouveauSujet).subscribe(...)
-    this.fermerModal();
+    this.forumService.getStats().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur stats', err)
+    });
   }
 
   changerOnglet(onglet: 'categories' | 'discussions' | 'expert') {
     this.ongletActif = onglet;
-    if (onglet === 'expert') this.chargerListeContacts();
+    if (onglet === 'expert') {
+      this.utilisateurActuel = this.authService.currentUserValue;
+      this.chargerListeContacts();
+    }
     this.cdr.detectChanges();
   }
 
   chargerListeContacts() {
-    const service = (this.utilisateurActuel?.role === 'EXPERT') ?
-      this.expertService.getClientsPourExpert(this.utilisateurActuel.id) :
-      this.expertService.getExperts();
-
-    service.subscribe(data => {
-      this.contacts = data;
-      if (this.contacts.length > 0) this.selectContact(this.contacts[0]);
-      this.cdr.detectChanges();
-    });
+    if (this.utilisateurActuel && this.utilisateurActuel.role === 'EXPERT') {
+      this.isExpertMode = true;
+      this.expertService.getClientsPourExpert(this.utilisateurActuel.id).subscribe({
+        next: (data) => {
+          this.contacts = data;
+          if (this.contacts.length > 0) {
+            this.selectContact(this.contacts[0]);
+          }
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      this.isExpertMode = false;
+      this.expertService.getExperts().subscribe({
+        next: (data) => {
+          this.contacts = data;
+          if (this.contacts.length > 0) {
+            this.selectContact(this.contacts[0]);
+          }
+          this.cdr.detectChanges();
+        }
+      });
+    }
   }
 
   selectContact(contact: any) {
@@ -120,31 +125,71 @@ export class CommunauteComponent implements OnInit {
   }
 
   chargerConversationExpert() {
-    if (!this.utilisateurActuel || !this.contactSelectionne) return;
+    if (!this.utilisateurActuel || !this.contactSelectionne) {
+      console.log("Erreur : Utilisateur ou Contact manquant !");
+      return;
+    }
+
     this.expertService.getConversation(this.utilisateurActuel.id, this.contactSelectionne.id)
-      .subscribe(data => { this.messagesExpert = data; this.cdr.detectChanges(); });
+      .subscribe({
+        next: (data) => {
+          this.messagesExpert = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error("Aïe ! Erreur serveur :", err);
+        }
+      });
   }
 
   envoyerMessageExpert() {
     if (!this.utilisateurActuel) { this.showLoginPrompt = true; return; }
     if (!this.nouveauMessageExpert.trim() || !this.contactSelectionne) return;
-    this.expertService.envoyerMessage(this.utilisateurActuel.id, this.contactSelectionne.id, this.nouveauMessageExpert)
-      .subscribe(msg => { this.messagesExpert.push(msg); this.nouveauMessageExpert = ''; this.cdr.detectChanges(); });
+
+    this.expertService.envoyerMessage(
+      this.utilisateurActuel.id,
+      this.contactSelectionne.id,
+      this.nouveauMessageExpert
+    ).subscribe({
+      next: (msg) => {
+        this.messagesExpert.push(msg);
+        this.nouveauMessageExpert = '';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   fermerLoginPrompt() { this.showLoginPrompt = false; }
+
+  // Correction de la promesse ignorée du linter
   allerVersConnexion() { this.router.navigate(['/auth']).then(); }
 
+  // --- FILTRES CORRIGÉS ---
   get filteredCategories() {
+    if (!this.searchTerm.trim()) return this.categories; // Corrigé : categories au lieu de categoriesForum
     const term = this.searchTerm.toLowerCase();
-    return this.categories.filter(c => c.nom.toLowerCase().includes(term));
+    return this.categories.filter((cat: any) =>
+      cat.nom.toLowerCase().includes(term) ||
+      cat.description.toLowerCase().includes(term)
+    );
   }
+
   get filteredDiscussions() {
+    if (!this.searchTerm.trim()) return this.discussions;
     const term = this.searchTerm.toLowerCase();
-    return this.discussions.filter(d => d.titre.toLowerCase().includes(term));
+    return this.discussions.filter((disc: any) =>
+      disc.titre.toLowerCase().includes(term) ||
+      disc.nomAuteur.toLowerCase().includes(term) // Corrigé : Utilise nomAuteur au lieu de auteur
+    );
   }
+
   get filteredContacts() {
+    if (!this.searchTerm.trim()) return this.contacts;
     const term = this.searchTerm.toLowerCase();
-    return this.contacts.filter(c => c.nom.toLowerCase().includes(term));
+    return this.contacts.filter((contact: any) =>
+      contact.nom.toLowerCase().includes(term) ||
+      contact.prenom.toLowerCase().includes(term) ||
+      (contact.specialite && contact.specialite.toLowerCase().includes(term))
+    );
   }
 }

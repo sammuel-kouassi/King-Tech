@@ -2,119 +2,204 @@
 
   <header class="communaute-header">
     <div class="header-container">
-      <h1 class="animate-1">
+      <h1>
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="header-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         Communauté KING-TECH
       </h1>
-      <p class="subtitle animate-2">Échangez avec des passionnés d'électronique, partagez vos projets et obtenez de l'aide de notre communauté et de nos experts.</p>
+      <p class="subtitle">Échangez avec des passionnés d'électronique, partagez vos projets et obtenez de l'aide de notre communauté et de nos experts.</p>
 
-      <div class="header-stats animate-3">
-        <span class="stat-item"><strong>{{ stats.membres }}</strong> membres</span>
-        <span class="stat-item"><strong>{{ stats.messages }}</strong> messages</span>
-        <span class="stat-item"><strong>{{ stats.experts }}</strong> experts en ligne</span>
+      <div class="header-stats">
+        <span class="stat-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <strong>{{ stats.membres }}</strong> membres
+        </span>
+        <span class="stat-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <strong>{{ stats.messages }}</strong> messages
+        </span>
+        <span class="stat-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <strong>{{ stats.experts }}</strong> experts en ligne
+        </span>
       </div>
     </div>
   </header>
 
   <main class="communaute-main">
 
-    <div class="search-actions animate-4">
-      <div class="search-bar">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" placeholder="Rechercher dans le forum..." [(ngModel)]="searchTerm">
-      </div>
-      <button class="btn-publier" (click)="creerDiscussion()">
-        + Nouvelle discussion
-      </button>
+    <div class="search-bar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input
+        type="text"
+        placeholder="Rechercher dans le forum..."
+        [(ngModel)]="searchTerm">
     </div>
 
-    <div class="tabs-container animate-5">
+    <div class="tabs-container">
       <button class="tab-btn" [class.active]="ongletActif === 'categories'" (click)="changerOnglet('categories')">Catégories</button>
       <button class="tab-btn" [class.active]="ongletActif === 'discussions'" (click)="changerOnglet('discussions')">Dernières Discussions</button>
       <button class="tab-btn" [class.active]="ongletActif === 'expert'" (click)="changerOnglet('expert')">Parler à un Expert</button>
     </div>
 
-    <div class="animate-6">
-      @if (ongletActif === 'categories') {
-        <div class="forum-list">
-          @for (cat of filteredCategories; track cat.id) {
-            <a [routerLink]="['/communaute/categorie', cat.id]" class="forum-card">
-              <div class="icon-wrapper"><span class="emoji-icon">{{ cat.icone || '🔧' }}</span></div>
-              <div class="forum-info">
-                <h3>{{ cat.nom }}</h3>
-                <span class="forum-stats">{{ cat.nombreSujets }} sujets · {{ cat.nombreMessages }} messages</span>
-              </div>
-              <div class="chevron"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-            </a>
-          }
-        </div>
-      }
+    @if (ongletActif === 'categories') {
+      <div class="forum-list">
+        @for (cat of filteredCategories; track cat.id) {
+          <a [routerLink]="['/communaute/categorie', cat.id]" class="forum-card">
 
-      @if (ongletActif === 'discussions') {
-        <div class="discussions-list">
-          @for (disc of filteredDiscussions; track disc.id) {
-            <div class="discussion-card">
-              <div class="avatar-circle">{{ disc.initialesAuteur }}</div>
-              <div class="disc-content">
-                <div class="disc-header">
-                  @if (disc.epingle) { <span class="badge-pinned">ÉPINGLÉ</span> }
-                  <h3>{{ disc.titre }}</h3>
+            <div class="icon-wrapper">
+              <span class="emoji-icon">{{ cat.icone || '🔧' }}</span>
+            </div>
+
+            <div class="forum-info">
+              <h3>{{ cat.nom }}</h3>
+              <span class="forum-stats">{{ cat.nombreSujets }} sujets · {{ cat.nombreMessages }} messages</span>
+            </div>
+
+            <div class="chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+          </a>
+        }
+        @if (filteredCategories.length === 0) {
+          <p class="empty-state">Aucun résultat trouvé pour votre recherche.</p>
+        }
+      </div>
+    }
+
+    @if (ongletActif === 'discussions') {
+      <div class="discussions-list">
+        @for (disc of filteredDiscussions; track disc.id) {
+          <div class="discussion-card">
+            <div class="avatar-circle">{{ disc.initialesAuteur }}</div>
+
+            <div class="disc-content">
+              <div class="disc-header">
+                @if (disc.epingle) { <span class="badge-pinned">ÉPINGLÉ</span> }
+                <h3>{{ disc.titre }}</h3>
+              </div>
+              <div class="disc-meta">
+                <span class="author">{{ disc.nomAuteur }}</span>
+                <span class="time">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  {{ disc.dateCreation | date:'shortTime' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="disc-stats">
+              <span class="stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                {{ disc.nombreReponses }}
+              </span>
+              <span class="stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                {{ disc.nombreVues }}
+              </span>
+            </div>
+          </div>
+        }
+        @if (filteredDiscussions.length === 0) {
+          <p class="empty-state">Aucune discussion ne correspond à votre recherche.</p>
+        }
+      </div>
+    }
+
+    @if (ongletActif === 'expert') {
+      <div class="expert-layout">
+
+        <aside class="expert-sidebar">
+          <h3 class="sidebar-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            {{ isExpertMode ? 'Mes Clients' : 'Nos Experts' }}
+          </h3>
+          <div class="experts-list">
+            @for (contact of filteredContacts; track contact.id) {
+              <div class="expert-card" [class.active]="contactSelectionne?.id === contact.id" (click)="selectContact(contact)">
+                <div class="expert-avatar">
+                  {{ contact.prenom.charAt(0) }}{{ contact.nom.charAt(0) }}
+                  <span class="status-dot online"></span>
                 </div>
-                <div class="disc-meta">
-                  <span class="author">{{ disc.nomAuteur }}</span>
-                  <span class="time">{{ disc.dateCreation | date:'shortTime' }}</span>
+                <div class="expert-info">
+                  <h4>{{ contact.prenom }} {{ contact.nom }}</h4>
+                  <p>{{ isExpertMode ? 'Client' : (contact.specialite || 'Expert Technique') }}</p>
+                </div>
+              </div>
+            }
+            @if (filteredContacts.length === 0) {
+              <p style="padding: 1rem; color: #64748b; font-size: 0.9rem; text-align: center;">Aucun résultat trouvé.</p>
+            }
+          </div>
+        </aside>
+
+        <section class="expert-chat">
+          @if (contactSelectionne) {
+            <div class="chat-header">
+              <div class="chat-expert-profile">
+                <div class="avatar-circle small" style="margin-right: 1rem; width: 40px; height: 40px;">
+                  {{ contactSelectionne.prenom.charAt(0) }}{{ contactSelectionne.nom.charAt(0) }}
+                </div>
+                <div>
+                  <h4>{{ contactSelectionne.prenom }} {{ contactSelectionne.nom }}</h4>
+                  <p>{{ isExpertMode ? 'Client KING-TECH' : (contactSelectionne.specialite || 'Expert Technique') }}</p>
                 </div>
               </div>
             </div>
+
+            <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
+
+              @if (!utilisateurActuel) {
+                <div class="empty-state">
+                  <p>Connectez-vous pour démarrer la conversation.</p>
+                </div>
+              }
+              @else if (messagesExpert.length === 0) {
+                <div class="empty-state">
+                  <p>Aucun message. Envoyez le premier message à <strong>{{ contactSelectionne.prenom }}</strong> !</p>
+                </div>
+              }
+              @else {
+                <div class="messages-list">
+                  @for (msg of messagesExpert; track msg.id) {
+                    <div class="message-wrapper" [class.sent-wrapper]="msg.expediteur.id === utilisateurActuel.id">
+                      <div class="message-bubble" [class.sent]="msg.expediteur.id === utilisateurActuel.id" [class.received]="msg.expediteur.id !== utilisateurActuel.id">
+                        <p>{{ msg.contenu }}</p>
+                        <span class="msg-time">{{ msg.dateEnvoi | date:'HH:mm' }}</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="chat-input-area">
+              <textarea
+                [(ngModel)]="nouveauMessageExpert"
+                placeholder="Écrivez votre message..."
+                (keyup.enter)="envoyerMessageExpert()">
+              </textarea>
+              <button class="send-btn" (click)="envoyerMessageExpert()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
           }
-        </div>
-      }
-    </div>
-  </main>
+        </section>
 
-  @if (showCreationModal) {
-    <div class="modal-overlay" (click)="fermerModal()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <div class="modal-header">
-          <h2>Démarrer une discussion</h2>
-          <button (click)="fermerModal()" class="close-btn">&times;</button>
-        </div>
-
-        <form (submit)="publierSujet()">
-          <div class="form-group">
-            <label>Titre</label>
-            <input type="text" name="titre" [(ngModel)]="nouveauSujet.titre" placeholder="Titre explicite..." required>
-          </div>
-
-          <div class="form-group">
-            <label>Type de sujet</label>
-            <select name="typeSujet" [(ngModel)]="nouveauSujet.typeSujet" required style="background-color: white;">
-              <option value="" disabled selected>Choisir un type de sujet</option>
-              <option value="TUTORIEL">Tutoriel</option>
-              <option value="COMPOSANT">Composant</option>
-              <option value="GENERAL">Général</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Votre question / message</label>
-            <textarea name="msg" [(ngModel)]="nouveauSujet.message" rows="5" placeholder="Décrivez votre besoin..." required></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" class="btn-annuler" (click)="fermerModal()">Annuler</button>
-            <button type="submit" class="btn-publier">Publier</button>
-          </div>
-        </form>
       </div>
-    </div>
-  }
+    }
+  </main>
 
   @if (showLoginPrompt) {
     <div class="modal-overlay" (click)="fermerLoginPrompt()">
       <div class="modal-content prompt-content" (click)="$event.stopPropagation()">
+        <div class="prompt-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#009B85" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </div>
         <h2>Connexion requise</h2>
-        <p>Vous devez être connecté pour participer au forum.</p>
+        <p>Vous devez être connecté pour discuter avec nos experts.</p>
         <div class="prompt-actions">
           <button class="btn-annuler" (click)="fermerLoginPrompt()">Plus tard</button>
           <button class="btn-publier" (click)="allerVersConnexion()">Se connecter</button>
