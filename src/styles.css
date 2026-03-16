@@ -13,3 +13,23 @@ html, body {
   padding-top: 60px;
   min-height: calc(100vh - 80px);
 }
+
+
+/* --- CORRECTION POUR MOBILE --- */
+@media (max-width: 768px) {
+
+  /* On force TOUS les gros titres h1 à rétrécir sur mobile */
+  h1 {
+    font-size: 2.2rem !important;
+    line-height: 1.2 !important;
+    word-break: break-word !important; /* Coupe les mots trop longs comme 'électroniques' si besoin */
+    white-space: normal !important;
+  }
+
+  /* On s'assure que la page ne puisse plus déborder sur la droite */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100vw !important;
+    max-width: 100% !important;
+  }
+}
