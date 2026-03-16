@@ -50,19 +50,16 @@ export class CommunauteComponent implements OnInit {
   }
 
   chargerDonnees() {
-    // Chargement des Catégories
     this.forumService.getCategories().subscribe({
       next: (data) => { this.categories = data; this.cdr.detectChanges(); },
       error: (err) => console.error('Erreur catégories', err)
     });
 
-    // Chargement des Discussions
     this.forumService.getDernieresDiscussions().subscribe({
       next: (data) => { this.discussions = data; this.cdr.detectChanges(); },
       error: (err) => console.error('Erreur discussions', err)
     });
 
-    // Chargement des Experts depuis Spring Boot
     this.expertService.getExperts().subscribe({
       next: (data) => {
         this.experts = data;
@@ -84,6 +81,18 @@ export class CommunauteComponent implements OnInit {
     });
   }
 
+  // --- NOUVELLE MÉTHODE POUR LE BOUTON ---
+  creerDiscussion() {
+    if (!this.utilisateurActuel) {
+      this.showLoginPrompt = true;
+    } else {
+      // Logique pour ouvrir le formulaire de création
+      // Exemple : this.router.navigate(['/communaute/nouveau']);
+      console.log("Ouverture du formulaire de création...");
+    }
+    this.cdr.detectChanges();
+  }
+
   changerOnglet(onglet: 'categories' | 'discussions' | 'expert') {
     this.ongletActif = onglet;
     if (onglet === 'expert') {
@@ -99,9 +108,7 @@ export class CommunauteComponent implements OnInit {
       this.expertService.getClientsPourExpert(this.utilisateurActuel.id).subscribe({
         next: (data) => {
           this.contacts = data;
-          if (this.contacts.length > 0) {
-            this.selectContact(this.contacts[0]);
-          }
+          if (this.contacts.length > 0) this.selectContact(this.contacts[0]);
           this.cdr.detectChanges();
         }
       });
@@ -110,9 +117,7 @@ export class CommunauteComponent implements OnInit {
       this.expertService.getExperts().subscribe({
         next: (data) => {
           this.contacts = data;
-          if (this.contacts.length > 0) {
-            this.selectContact(this.contacts[0]);
-          }
+          if (this.contacts.length > 0) this.selectContact(this.contacts[0]);
           this.cdr.detectChanges();
         }
       });
@@ -125,20 +130,14 @@ export class CommunauteComponent implements OnInit {
   }
 
   chargerConversationExpert() {
-    if (!this.utilisateurActuel || !this.contactSelectionne) {
-      console.log("Erreur : Utilisateur ou Contact manquant !");
-      return;
-    }
-
+    if (!this.utilisateurActuel || !this.contactSelectionne) return;
     this.expertService.getConversation(this.utilisateurActuel.id, this.contactSelectionne.id)
       .subscribe({
         next: (data) => {
           this.messagesExpert = data;
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error("Aïe ! Erreur serveur :", err);
-        }
+        error: (err) => console.error("Erreur conversation :", err)
       });
   }
 
@@ -161,16 +160,14 @@ export class CommunauteComponent implements OnInit {
 
   fermerLoginPrompt() { this.showLoginPrompt = false; }
 
-  // Correction de la promesse ignorée du linter
   allerVersConnexion() { this.router.navigate(['/auth']).then(); }
 
-  // --- FILTRES CORRIGÉS ---
+  // --- FILTRES ---
   get filteredCategories() {
-    if (!this.searchTerm.trim()) return this.categories; // Corrigé : categories au lieu de categoriesForum
+    if (!this.searchTerm.trim()) return this.categories;
     const term = this.searchTerm.toLowerCase();
     return this.categories.filter((cat: any) =>
-      cat.nom.toLowerCase().includes(term) ||
-      cat.description.toLowerCase().includes(term)
+      cat.nom.toLowerCase().includes(term) || cat.description.toLowerCase().includes(term)
     );
   }
 
@@ -178,8 +175,7 @@ export class CommunauteComponent implements OnInit {
     if (!this.searchTerm.trim()) return this.discussions;
     const term = this.searchTerm.toLowerCase();
     return this.discussions.filter((disc: any) =>
-      disc.titre.toLowerCase().includes(term) ||
-      disc.nomAuteur.toLowerCase().includes(term) // Corrigé : Utilise nomAuteur au lieu de auteur
+      disc.titre.toLowerCase().includes(term) || disc.nomAuteur.toLowerCase().includes(term)
     );
   }
 
@@ -187,9 +183,7 @@ export class CommunauteComponent implements OnInit {
     if (!this.searchTerm.trim()) return this.contacts;
     const term = this.searchTerm.toLowerCase();
     return this.contacts.filter((contact: any) =>
-      contact.nom.toLowerCase().includes(term) ||
-      contact.prenom.toLowerCase().includes(term) ||
-      (contact.specialite && contact.specialite.toLowerCase().includes(term))
+      contact.nom.toLowerCase().includes(term) || contact.prenom.toLowerCase().includes(term)
     );
   }
 }
