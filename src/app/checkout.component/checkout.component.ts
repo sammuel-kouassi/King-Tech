@@ -22,7 +22,7 @@ export class CheckoutComponent {
   modeLivraison = 'standard';
   typePaiement = 'AL_LIVRAISON';
   isProcessing = false;
-  errorMessage: string | null = null; // <-- NOUVELLE VARIABLE POUR L'ERREUR
+  errorMessage: string | null = null; // Variable pour afficher l'alerte rouge
 
   clientForm = {
     prenom: '',
@@ -33,14 +33,16 @@ export class CheckoutComponent {
   };
 
   confirmerCommande() {
+    // 1. On réinitialise l'erreur à chaque clic
     this.errorMessage = null;
 
-    // Validation
+    // 2. Validation instantanée du formulaire (Le message s'affiche de suite si vide)
     if (!this.clientForm.nom || !this.clientForm.telephone || !this.clientForm.adresse) {
       this.errorMessage = "Veuillez remplir tous les champs obligatoires (Nom, Téléphone, Adresse).";
-      return;
+      return; // On arrête tout, pas de requête au serveur
     }
 
+    // 3. Si tout est bon, on lance le traitement
     this.isProcessing = true;
 
     // Récupération du panier
@@ -73,7 +75,6 @@ export class CheckoutComponent {
         console.error('Erreur lors de la validation', erreur);
         this.isProcessing = false;
 
-        // --- GESTION INTELLIGENTE DU MESSAGE D'ERREUR ---
         let msg = "Une erreur est survenue lors de la création de la commande.";
 
         if (erreur.error && typeof erreur.error === 'string') {
@@ -81,9 +82,10 @@ export class CheckoutComponent {
         } else if (erreur.error && erreur.error.message) {
           msg = erreur.error.message;
         } else if (erreur.status === 400) {
-          msg = "Certains articles de votre panier ne sont plus en stock suffisant. Veuillez vérifier les quantités dans les détails du produit .";
+          msg = "Certains articles de votre panier ne sont plus en stock suffisant. Veuillez vérifier les quantités dans les détails du produit.";
         }
 
+        // On affiche l'erreur renvoyée par le backend
         this.errorMessage = msg;
       }
     });
