@@ -9,7 +9,6 @@ import {ProduitDetail, ProduitResume} from '../models/produit.model';
 export class ProduitService {
   private http = inject(HttpClient);
 
-  // L'URL de ton backend Spring Boot
   private apiUrl = 'https://king-tech-api.onrender.com/api/produits';
 
   getProduits(): Observable<ProduitResume[]> {

@@ -16,35 +16,34 @@ export class CategoriesComponent implements OnInit {
   private produitService = inject(ProduitService);
   private cdr = inject(ChangeDetectorRef);
 
-  // 1. Définition stricte de tes 6 catégories avec images par défaut et compteurs à 0
   categoriesList = [
     {
-      name: 'Arduino',
+      name: 'ARDUINO',
       image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=600&h=400',
       count: 0
     },
     {
-      name: 'Raspberry',
+      name: 'RASPBERRY',
       image: 'assets/images/raspberry.jpg',
       count: 0
     },
     {
-      name: 'Robotique',
+      name: 'ROBOTIQUE',
       image: 'assets/images/robotique.jpg',
       count: 0
     },
     {
-      name: 'Modules',
+      name: 'MODULE',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600&h=400',
       count: 0
     },
     {
-      name: 'Composants',
+      name: 'COMPOSANT',
       image: 'assets/images/composant.jpg',
       count: 0
     },
     {
-      name: 'Outils & Impression 3D',
+      name: 'OUTILS & IMPRESSION 3D',
       image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=600&h=400',
       count: 0
     }
@@ -54,10 +53,8 @@ export class CategoriesComponent implements OnInit {
     this.produitService.getProduits().subscribe({
       next: (data: ProduitResume[]) => {
 
-        // On s'assure que les compteurs sont à 0 avant de recompter
         this.categoriesList.forEach(cat => cat.count = 0);
 
-        // Calcul dynamique : on incrémente le compteur si la catégorie correspond
         data.forEach(produit => {
           const catIndex = this.categoriesList.findIndex(c => c.name === produit.categorie);
           if (catIndex !== -1) {
@@ -65,7 +62,6 @@ export class CategoriesComponent implements OnInit {
           }
         });
 
-        // On rafraîchit l'affichage
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Erreur chargement des catégories:', err)
