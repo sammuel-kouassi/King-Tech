@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // <-- INDISPENSABLE POUR [(ngModel)]
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { CommandeService } from '../services/commande.service';
@@ -22,6 +22,7 @@ export class CheckoutComponent {
   modeLivraison = 'standard';
   typePaiement = 'AL_LIVRAISON';
   isProcessing = false;
+  errorMessage: string | null = null; // <-- NOUVELLE VARIABLE POUR L'ERREUR
 
   clientForm = {
     prenom: '',
@@ -32,9 +33,11 @@ export class CheckoutComponent {
   };
 
   confirmerCommande() {
+    this.errorMessage = null; // On réinitialise l'erreur à chaque nouvelle tentative
+
     // Validation
     if (!this.clientForm.nom || !this.clientForm.telephone || !this.clientForm.adresse) {
-      alert("Veuillez remplir tous les champs obligatoires (Nom, Téléphone, Adresse).");
+      this.errorMessage = "Veuillez remplir tous les champs obligatoires (Nom, Téléphone, Adresse).";
       return;
     }
 
@@ -49,10 +52,8 @@ export class CheckoutComponent {
       quantite: item.quantity || item.quantite
     }));
 
-    //  On fusionne Prénom et Nom pour l'entité Commande
     const nomComplet = `${this.clientForm.prenom} ${this.clientForm.nom}`.trim();
 
-    // On prépare la requête
     const commandeRequest: CommandeRequest = {
       nomClient: nomComplet,
       emailClient: this.clientForm.email,
@@ -64,15 +65,26 @@ export class CheckoutComponent {
     // Appel API vers backend
     this.commandeService.creerCommande(commandeRequest).subscribe({
       next: (reponseBackend) => {
-        // Redirection vers la page de succès avec les vraies données !
         this.router.navigate(['/success'], {
           state: { commandeInfo: reponseBackend }
         });
       },
       error: (erreur) => {
         console.error('Erreur lors de la validation', erreur);
-        alert("Une erreur est survenue lors de la création de la commande.");
         this.isProcessing = false;
+
+        // --- GESTION INTELLIGENTE DU MESSAGE D'ERREUR ---
+        let msg = "Une erreur est survenue lors de la création de la commande.";
+
+        if (erreur.error && typeof erreur.error === 'string') {
+          msg = erreur.error;
+        } else if (erreur.error && erreur.error.message) {
+          msg = erreur.error.message;
+        } else if (erreur.status === 400) {
+          msg = "Certains articles de votre panier ne sont plus en stock suffisant. Veuillez vérifier les quantités.";
+        }
+
+        this.errorMessage = msg;
       }
     });
   }

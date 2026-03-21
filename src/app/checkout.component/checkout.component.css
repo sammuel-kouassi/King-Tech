@@ -284,3 +284,26 @@
 .contact-links a { font-size: 0.9rem; color: #009B85; font-weight: 600; text-decoration: none; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+
+/* --- Alerte d'erreur --- */
+.error-alert {
+  background-color: #fef2f2;
+  border: 1px solid #f87171;
+  color: #b91c1c;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-alert svg {
+  flex-shrink: 0;
+  color: #ef4444;
+}
