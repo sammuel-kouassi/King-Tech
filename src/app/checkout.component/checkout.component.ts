@@ -33,7 +33,7 @@ export class CheckoutComponent {
   };
 
   confirmerCommande() {
-    this.errorMessage = null; // On réinitialise l'erreur à chaque nouvelle tentative
+    this.errorMessage = null;
 
     // Validation
     if (!this.clientForm.nom || !this.clientForm.telephone || !this.clientForm.adresse) {
@@ -81,7 +81,7 @@ export class CheckoutComponent {
         } else if (erreur.error && erreur.error.message) {
           msg = erreur.error.message;
         } else if (erreur.status === 400) {
-          msg = "Certains articles de votre panier ne sont plus en stock suffisant. Veuillez vérifier les quantités.";
+          msg = "Certains articles de votre panier ne sont plus en stock suffisant. Veuillez vérifier les quantités dans les détails du produit .";
         }
 
         this.errorMessage = msg;
