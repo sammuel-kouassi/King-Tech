@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core'; // <-- 1. AJOUT DE L'IMPORT
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -49,7 +49,6 @@ export class CheckoutComponent {
     // Récupération du panier
     const cartItems = typeof this.cartService.items === 'function' ? this.cartService.items() : this.cartService.items;
 
-    // Transformation des articles pour le backend
     const lignesCommande: LigneCommandeRequest[] = cartItems.map((item: any) => ({
       produitId: item.id || item.produit?.id,
       quantite: item.quantity || item.quantite
@@ -75,7 +74,7 @@ export class CheckoutComponent {
       },
       error: (erreur) => {
         console.error('Erreur lors de la validation', erreur);
-        this.isProcessing = false; // Le spinner s'arrête
+        this.isProcessing = false;
 
         let msg = "Une erreur est survenue lors de la création de la commande.";
 
@@ -87,10 +86,8 @@ export class CheckoutComponent {
           msg = "Certains articles de votre panier ne sont plus en stock suffisant. Veuillez vérifier les quantités dans les détails du produit.";
         }
 
-        // On assigne le message
         this.errorMessage = msg;
 
-        // <-- 3. COUP DE BAGUETTE MAGIQUE POUR L'AFFICHAGE INSTANTANÉ -->
         this.cdr.detectChanges();
       }
     });
